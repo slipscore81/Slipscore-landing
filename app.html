@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>SlipScore</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:#0A0F0D;height:100%}
+body{background:#0A0F0D;color:#E8F0EA;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100vh;overflow:hidden;max-width:430px;margin:0 auto}
+
+/* PAGES */
+.page{display:none;flex-direction:column;height:100vh;background:#0A0F0D}
+.page.show{display:flex}
+
+/* LOGIN */
+#page-login{align-items:center;justify-content:flex-start;padding:60px 28px 40px;overflow-y:auto}
+.logo{font-weight:900;font-size:30px;color:#fff;margin-bottom:6px}.logo span{color:#00C896}
+.logo-sub{font-size:13px;color:#6B7F70;margin-bottom:40px;text-align:center}
+.lang-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:28px;width:100%}
+.lchip{background:#141A16;border:1px solid #1E2820;color:#6B7F70;padding:5px 12px;border-radius:50px;font-size:12px;cursor:pointer}
+.lchip.on{border-color:#00C896;color:#00C896;background:rgba(0,200,150,0.08)}
+.login-tabs{display:flex;background:#141A16;border-radius:12px;padding:4px;margin-bottom:24px;width:100%}
+.ltab{flex:1;padding:10px;text-align:center;font-size:14px;font-weight:600;color:#6B7F70;border-radius:9px;cursor:pointer}
+.ltab.on{background:#00C896;color:#0A0F0D}
+.field{width:100%;margin-bottom:14px}
+.field label{font-size:12px;color:#6B7F70;display:block;margin-bottom:6px}
+.field input{width:100%;background:#141A16;border:1px solid #1E2820;border-radius:12px;padding:14px 16px;color:#fff;font-size:15px;outline:none}
+.field input:focus{border-color:#00C896}
+.field input::placeholder{color:#6B7F70}
+.gbtn{width:100%;background:#00C896;color:#0A0F0D;border:none;padding:15px;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;margin-top:4px}
+.wbtn{width:100%;background:#141A16;border:1px solid #1E2820;color:#E8F0EA;padding:13px;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;margin-top:10px}
+.otp-wrap{display:flex;gap:10px;justify-content:center;margin:20px 0;width:100%}
+.obox{width:46px;height:54px;background:#141A16;border:1px solid #1E2820;border-radius:12px;text-align:center;font-size:22px;font-weight:700;color:#fff;outline:none}
+.obox:focus{border-color:#00C896}
+.terms{font-size:11px;color:#6B7F70;text-align:center;margin-top:16px}.terms span{color:#00C896}
+
+/* APP SHELL */
+#page-app{flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;flex-shrink:0;background:#0A0F0D}
+.tb-left{}
+.tb-greeting{font-size:11px;color:#6B7F70}
+.tb-logo{font-weight:900;font-size:20px;color:#fff}.tb-logo span{color:#00C896}
+.tb-title{font-weight:800;font-size:18px;color:#fff;letter-spacing:-0.5px}
+.tb-right{display:flex;gap:10px;align-items:center}
+.tb-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;background:#141A16;border:1px solid #1E2820;cursor:pointer}
+.tb-av{width:36px;height:36px;border-radius:50%;background:#00C896;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#0A0F0D}
+
+/* TAB CONTENT */
+.tab-content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:12px}
+.tab-content::-webkit-scrollbar{display:none}
+.tab-pane{display:none}
+.tab-pane.show{display:block}
+
+/* BOTTOM NAV */
+.bnav{display:flex;background:#0D1410;border-top:1px solid #1E2820;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;cursor:pointer}
+.bni-icon{font-size:22px}
+.bni-label{font-size:10px;color:#6B7F70;font-weight:500}
+.bni.on .bni-label{color:#00C896}
+
+/* CARDS */
+.card{background:#141A16;border:1px solid #1E2820;border-radius:16px;padding:18px;margin:0 16px}
+.card+.card{margin-top:12px}
+.green-card{background:linear-gradient(135deg,#00C896,#00A87E);border-radius:16px;padding:20px;margin:0 16px}
+
+/* SECTION */
+.sec-title{font-weight:800;font-size:15px;color:#fff;padding:16px 16px 6px;letter-spacing:-0.3px}
+.sec-sub{font-size:12px;color:#6B7F70;padding:0 16px 10px}
+
+/* SCORE */
+.score-big{font-weight:900;font-size:52px;color:#0A0F0D;line-height:1;letter-spacing:-2px}
+.score-target{font-weight:800;font-size:20px;color:#0A0F0D}
+
+/* PROGRESS */
+.pbar{height:7px;background:rgba(0,0,0,0.2);border-radius:50px;overflow:hidden;margin:14px 0 6px}
+.pfill{height:100%;background:#0A0F0D;border-radius:50px;opacity:0.5}
+
+/* MONTH DOTS */
+.month-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:0 16px}
+.mdot{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.mdot.done{background:#00C896;color:#0A0F0D}
+.mdot.now{background:rgba(0,200,150,0.15);border:2px solid #00C896;color:#00C896}
+.mdot.next{background:#1E2820;color:#6B7F70}
+
+/* PAYSLIP ROW */
+.ps-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #1E2820}
+.ps-row:last-child{border-bottom:none}
+.ps-icon{width:40px;height:40px;border-radius:10px;background:rgba(0,200,150,0.1);border:1px solid rgba(0,200,150,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ps-info{flex:1}
+.ps-month{font-weight:600;font-size:14px;color:#fff}
+.ps-amt{font-size:12px;color:#6B7F70;margin-top:2px}
+.ps-dl{background:rgba(0,200,150,0.1);color:#00C896;font-size:10px;font-weight:700;padding:4px 10px;border-radius:50px;border:1px solid rgba(0,200,150,0.2);cursor:pointer}
+
+/* SCORE RING */
+.ring-wrap{display:flex;flex-direction:column;align-items:center;padding:20px 16px}
+.ring-container{position:relative;width:170px;height:170px}
+.ring-container svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:#1E2820;stroke-width:14}
+.ring-fill{fill:none;stroke:#00C896;stroke-width:14;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 1.8s ease}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num{font-weight:900;font-size:40px;color:#fff;letter-spacing:-2px;line-height:1}
+.ring-lbl{font-size:11px;color:#6B7F70;margin-top:2px}
+.ring-status{font-size:12px;color:#00C896;font-weight:600;margin-top:3px}
+
+/* SCORE HISTORY */
+.sh-row{margin-bottom:14px}
+.sh-top{display:flex;justify-content:space-between;margin-bottom:5px}
+.sh-month{font-size:13px;color:#6B7F70}
+.sh-score{font-weight:700;font-size:13px;color:#fff}
+.sh-score.current{color:#00C896}
+.sh-bar{height:7px;background:#1E2820;border-radius:50px;overflow:hidden}
+.sh-fill{height:100%;background:#00C896;border-radius:50px}
+
+/* PLAN CARDS */
+.plan{background:#141A16;border:1px solid #1E2820;border-radius:14px;padding:18px;margin:0 16px 12px}
+.plan.active{border-color:#00C896}
+.plan-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;margin-bottom:10px;letter-spacing:1px;text-transform:uppercase}
+.plan-price{font-weight:900;font-size:30px;color:#fff;line-height:1}
+.plan-price sup{font-size:15px;vertical-align:super}
+.plan-period{font-size:11px;color:#6B7F70;margin-bottom:12px;margin-top:2px}
+.plan-feat{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#E8F0EA;margin-bottom:6px}
+.plan-feat::before{content:‘✓’;color:#00C896;font-weight:800;flex-shrink:0}
+.plan-loan{font-size:12px;color:#00C896;font-weight:600;margin-top:10px}
+
+/* LENDER */
+.lender{background:#141A16;border:1px solid #1E2820;border-radius:14px;padding:16px;margin:0 16px 10px;display:flex;align-items:center;gap:12px}
+.lender-av{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.lender-info{flex:1;min-width:0}
+.lender-name{font-weight:700;font-size:14px;color:#fff}
+.lender-detail{font-size:11px;color:#6B7F70;margin-top:2px}
+.lender-amt{font-size:12px;color:#00C896;font-weight:700;margin-top:2px}
+.apply-btn{background:#00C896;color:#0A0F0D;border:none;padding:8px 14px;border-radius:9px;font-weight:700;font-size:12px;cursor:pointer;flex-shrink:0}
+.locked{opacity:0.5}
+
+/* CC */
+.cc{background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:16px;padding:20px;margin:0 16px;position:relative;overflow:hidden}
+.cc::after{content:’’;position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:rgba(0,200,150,0.08)}
+.cc-top{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:2px;font-weight:600}
+.cc-num{font-size:16px;color:rgba(255,255,255,0.5);letter-spacing:4px;margin:14px 0 8px}
+.cc-name{font-size:13px;color:#fff;font-weight:600}
+.cc-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px}
+.cc-icon{position:absolute;top:18px;right:18px;font-size:28px}
+
+/* PROFILE */
+.prof-head{display:flex;flex-direction:column;align-items:center;padding:20px 16px;gap:10px}
+.prof-av{width:70px;height:70px;border-radius:50%;background:#00C896;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:26px;color:#0A0F0D}
+.prof-name{font-weight:800;font-size:20px;color:#fff;letter-spacing:-0.5px}
+.prof-badge{background:rgba(0,200,150,0.1);border:1px solid rgba(0,200,150,0.2);color:#00C896;font-size:12px;font-weight:600;padding:4px 14px;border-radius:50px}
+
+.set-row{display:flex;align-items:center;gap:12px;padding:15px 16px;border-bottom:1px solid #1E2820;cursor:pointer}
+.set-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.set-label{flex:1;font-size:14px;color:#fff;font-weight:500}
+.set-val{font-size:12px;color:#6B7F70;margin-right:6px}
+.set-arr{font-size:18px;color:#6B7F70}
+
+.bank-box{background:#141A16;border:1px solid #00C896;border-radius:14px;padding:18px;margin:0 16px;text-align:center;cursor:pointer}
+
+/* DIVIDER */
+.divrow{display:flex;align-items:center;gap:10px;margin:16px 16px}
+.divline{flex:1;height:1px;background:#1E2820}
+.divtxt{font-size:11px;color:#6B7F70}
+
+/* TOAST */
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1a2a1f;border:1px solid #00C896;color:#00C896;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:600;z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.25s;white-space:nowrap;max-width:90vw;text-align:center}
+#toast.on{opacity:1}
+
+.row{display:flex;align-items:center;justify-content:space-between}
+.mt12{margin-top:12px}
+.green{color:#00C896}
+.muted{color:#6B7F70}
+.pad{padding:0 16px}
+</style>
+
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ===== LOGIN ===== -->
+
+<div id="page-login" class="page show">
+  <div style="text-align:center;width:100%">
+    <div class="logo" style="margin-bottom:4px">Slip<span>Score</span></div>
+    <div class="logo-sub">Your Payslip. Your Credit. Your Loan.</div>
+  </div>
+
+  <div class="lang-row">
+    <div class="lchip on" onclick="pickLang(this,'en')">English</div>
+    <div class="lchip" onclick="pickLang(this,'hi')">हिंदी</div>
+    <div class="lchip" onclick="pickLang(this,'ta')">தமிழ்</div>
+    <div class="lchip" onclick="pickLang(this,'te')">తెలుగు</div>
+    <div class="lchip" onclick="pickLang(this,'kn')">ಕನ್ನಡ</div>
+    <div class="lchip" onclick="pickLang(this,'mr')">मराठी</div>
+    <div class="lchip" onclick="pickLang(this,'ml')">മലയാളം</div>
+    <div class="lchip" onclick="pickLang(this,'bn')">বাংলা</div>
+  </div>
+
+  <div class="login-tabs">
+    <div class="ltab on" id="ltab-phone" onclick="loginTab('phone')">📱 Phone</div>
+    <div class="ltab" id="ltab-email" onclick="loginTab('email')">✉️ Email</div>
+  </div>
+
+  <!-- Phone -->
+
+  <div id="lf-phone" style="width:100%">
+    <div class="field">
+      <label id="lbl-ph">WhatsApp Number</label>
+      <input type="tel" id="ph-inp" placeholder="+91 98765 43210"/>
+    </div>
+    <button class="gbtn" id="otp-btn" onclick="sendOTP()">Send OTP →</button>
+  </div>
+
+  <!-- Email -->
+
+  <div id="lf-email" style="display:none;width:100%">
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="em-inp" placeholder="you@example.com"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="pw-inp" placeholder="••••••••"/>
+    </div>
+    <button class="gbtn" onclick="doLogin()">Login →</button>
+  </div>
+
+  <!-- OTP -->
+
+  <div id="lf-otp" style="display:none;width:100%;text-align:center">
+    <div style="font-size:13px;color:#6B7F70;margin-bottom:4px" id="otp-label">OTP sent to your number</div>
+    <div style="font-size:12px;color:#00C896;margin-bottom:16px">Use 1 2 3 4 5 6 for demo</div>
+    <div class="otp-wrap">
+      <input class="obox" maxlength="1" type="number" id="o0" oninput="oNext(0)">
+      <input class="obox" maxlength="1" type="number" id="o1" oninput="oNext(1)">
+      <input class="obox" maxlength="1" type="number" id="o2" oninput="oNext(2)">
+      <input class="obox" maxlength="1" type="number" id="o3" oninput="oNext(3)">
+      <input class="obox" maxlength="1" type="number" id="o4" oninput="oNext(4)">
+      <input class="obox" maxlength="1" type="number" id="o5" oninput="oNext(5)">
+    </div>
+    <button class="gbtn" onclick="doLogin()">Verify & Enter →</button>
+    <button class="wbtn" onclick="backLogin()">← Change Number</button>
+  </div>
+
+  <div class="terms">By continuing you agree to our <span>Terms & Privacy Policy</span></div>
+</div>
+
+<!-- ===== APP ===== -->
+
+<div id="page-app" class="page">
+
+  <!-- Topbar (swapped by tab) -->
+
+  <div class="topbar" id="app-topbar">
+    <div class="tb-left">
+      <div class="tb-greeting">Good morning 👋</div>
+      <div class="tb-logo">Slip<span>Score</span></div>
+    </div>
+    <div class="tb-right">
+      <div class="tb-btn">🔔</div>
+      <div class="tb-av">S</div>
+    </div>
+  </div>
+
+  <!-- Tab content -->
+
+  <div class="tab-content">
+
+```
+<!-- HOME -->
+<div class="tab-pane show" id="pane-home">
+  <!-- Credit Score Card -->
+  <div class="green-card">
+    <div style="font-size:11px;font-weight:700;color:#0A0F0D;opacity:0.7;letter-spacing:2px;margin-bottom:6px">YOUR CREDIT SCORE</div>
+    <div class="row">
+      <div>
+        <div class="score-big">642</div>
+        <div style="font-size:12px;color:#0A0F0D;opacity:0.65;margin-top:4px">↑ +18 this month · Building Fast</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:#0A0F0D;opacity:0.6">Target</div>
+        <div class="score-target">750</div>
+        <div style="font-size:10px;color:#0A0F0D;opacity:0.5">in 8 months</div>
+      </div>
+    </div>
+    <div class="pbar"><div class="pfill" style="width:54%"></div></div>
+    <div class="row"><span style="font-size:10px;color:#0A0F0D;opacity:0.5">300</span><span style="font-size:10px;color:#0A0F0D;opacity:0.5">900</span></div>
+  </div>
+
+  <!-- Month Journey -->
+  <div class="sec-title">12-Month Journey</div>
+  <div class="sec-sub">Month 4 of 12 — Loan unlocks at Month 12 🔓</div>
+  <div class="month-grid">
+    <div class="mdot done">Jan</div><div class="mdot done">Feb</div><div class="mdot done">Mar</div>
+    <div class="mdot now">Apr</div><div class="mdot next">May</div><div class="mdot next">Jun</div>
+    <div class="mdot next">Jul</div><div class="mdot next">Aug</div><div class="mdot next">Sep</div>
+    <div class="mdot next">Oct</div><div class="mdot next">Nov</div><div class="mdot next">Dec</div>
+  </div>
+
+  <!-- Bank -->
+  <div class="sec-title">Linked Bank Account</div>
+  <div class="bank-box" onclick="toast('Bank verified ✓')">
+    <div style="font-size:28px;margin-bottom:8px">🏦</div>
+    <div style="font-weight:700;font-size:14px;color:#fff">HDFC Bank ••••4521</div>
+    <div style="font-size:12px;color:#00C896;margin-top:4px">✓ Salary verified — ₹18,000/month</div>
+    <div style="font-size:11px;color:#6B7F70;margin-top:4px">Tap to manage</div>
+  </div>
+
+  <!-- Next Payment -->
+  <div class="sec-title">Next Payment</div>
+  <div class="card row">
+    <div>
+      <div style="font-size:12px;color:#6B7F70">Due in 12 days</div>
+      <div style="font-weight:900;font-size:24px;color:#fff;letter-spacing:-1px;margin-top:2px">₹200</div>
+      <div style="font-size:11px;color:#6B7F70">Basic Plan · May 2026</div>
+    </div>
+    <button class="apply-btn" style="padding:12px 18px;font-size:13px" onclick="toast('Opening UPI payment...')">Pay via UPI</button>
+  </div>
+
+  <!-- Payslips -->
+  <div class="sec-title">Recent Payslips</div>
+  <div class="card">
+    <div class="ps-row">
+      <div class="ps-icon">📄</div>
+      <div class="ps-info"><div class="ps-month">April 2026</div><div class="ps-amt">₹18,000 · Salon, Chennai</div></div>
+      <div class="ps-dl" onclick="toast('Downloading payslip...')">Download</div>
+    </div>
+    <div class="ps-row">
+      <div class="ps-icon">📄</div>
+      <div class="ps-info"><div class="ps-month">March 2026</div><div class="ps-amt">₹18,000 · Salon, Chennai</div></div>
+      <div class="ps-dl" onclick="toast('Downloading payslip...')">Download</div>
+    </div>
+    <div class="ps-row">
+      <div class="ps-icon">📄</div>
+      <div class="ps-info"><div class="ps-month">February 2026</div><div class="ps-amt">₹18,000 · Salon, Chennai</div></div>
+      <div class="ps-dl" onclick="toast('Downloading payslip...')">Download</div>
+    </div>
+    <div class="ps-row">
+      <div class="ps-icon">📄</div>
+      <div class="ps-info"><div class="ps-month">January 2026</div><div class="ps-amt">₹18,000 · Salon, Chennai</div></div>
+      <div class="ps-dl" onclick="toast('Downloading payslip...')">Download</div>
+    </div>
+  </div>
+</div>
+
+<!-- CREDIT -->
+<div class="tab-pane" id="pane-credit">
+  <!-- Score Ring -->
+  <div class="ring-wrap">
+    <div class="ring-container">
+      <svg width="170" height="170" viewBox="0 0 170 170">
+        <circle class="ring-bg" cx="85" cy="85" r="70"/>
+        <circle class="ring-fill" id="ring-fill" cx="85" cy="85" r="70"/>
+      </svg>
+      <div class="ring-center">
+        <div class="ring-num">642</div>
+        <div class="ring-lbl">CIBIL Score</div>
+        <div class="ring-status">↑ Building</div>
+      </div>
+    </div>
+    <!-- Range -->
+    <div style="display:flex;gap:6px;margin-top:14px">
+      <div style="background:#e74c3c;color:#fff;font-size:10px;padding:4px 8px;border-radius:6px;text-align:center">Poor<br>300–549</div>
+      <div style="background:#e67e22;color:#fff;font-size:10px;padding:4px 8px;border-radius:6px;text-align:center">Fair<br>550–649</div>
+      <div style="background:#00C896;color:#0A0F0D;font-size:10px;padding:4px 8px;border-radius:6px;text-align:center;font-weight:700">You ✓<br>642</div>
+      <div style="background:#27ae60;color:#fff;font-size:10px;padding:4px 8px;border-radius:6px;text-align:center">Good<br>750+</div>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="sec-title">Score History</div>
+  <div class="card">
+    <div class="sh-row"><div class="sh-top"><span class="sh-month">January</span><span class="sh-score">588</span></div><div class="sh-bar"><div class="sh-fill" style="width:47%"></div></div></div>
+    <div class="sh-row"><div class="sh-top"><span class="sh-month">February</span><span class="sh-score">604</span></div><div class="sh-bar"><div class="sh-fill" style="width:51%"></div></div></div>
+    <div class="sh-row"><div class="sh-top"><span class="sh-month">March</span><span class="sh-score">624</span></div><div class="sh-bar"><div class="sh-fill" style="width:55%"></div></div></div>
+    <div class="sh-row"><div class="sh-top"><span class="sh-month" style="color:#00C896;font-weight:600">April (Now)</span><span class="sh-score current">642</span></div><div class="sh-bar"><div class="sh-fill" style="width:59%"></div></div></div>
+  </div>
+
+  <!-- Plans -->
+  <div class="sec-title">Your Plan</div>
+  <div class="plan active">
+    <div class="plan-badge" style="background:rgba(0,200,150,0.1);color:#00C896;border:1px solid rgba(0,200,150,0.2)">✓ Basic — Active</div>
+    <div class="plan-price"><sup>₹</sup>200</div>
+    <div class="plan-period">per month · 4 of 12 months done</div>
+    <div class="plan-feat">Monthly professional payslip PDF</div>
+    <div class="plan-feat">CIBIL reporting every month</div>
+    <div class="plan-feat">₹1,900 returned after 12 months</div>
+    <div class="plan-loan">Loan up to ₹25,000 at month 12</div>
+  </div>
+
+  <div class="sec-title">Upgrade Plan</div>
+  <div class="plan">
+    <div class="plan-badge" style="background:#1E2820;color:#6B7F70">Plus</div>
+    <div class="plan-price"><sup>₹</sup>500</div>
+    <div class="plan-period">per month</div>
+    <div class="plan-feat">Everything in Basic</div>
+    <div class="plan-feat">Priority loan matching</div>
+    <div class="plan-feat">Income certificate for visa/rental</div>
+    <div class="plan-loan">Loan up to ₹50,000</div>
+    <button class="gbtn" style="margin-top:12px" onclick="toast('Upgrading to Plus...')">Upgrade to Plus — ₹500/mo</button>
+  </div>
+
+  <div class="plan" style="margin-bottom:20px">
+    <div class="plan-badge" style="background:#1E2820;color:#6B7F70">Pro</div>
+    <div class="plan-price"><sup>₹</sup>1,000</div>
+    <div class="plan-period">per month</div>
+    <div class="plan-feat">Everything in Plus</div>
+    <div class="plan-feat">Dedicated loan advisor</div>
+    <div class="plan-feat">Employment letter generation</div>
+    <div class="plan-loan">Loan up to ₹5,00,000</div>
+    <button class="gbtn" style="margin-top:12px;background:#1E2820;color:#E8F0EA" onclick="toast('Upgrading to Pro...')">Upgrade to Pro — ₹1,000/mo</button>
+  </div>
+</div>
+
+<!-- MARKETPLACE -->
+<div class="tab-pane" id="pane-market">
+  <div class="pad" style="padding-top:8px;padding-bottom:8px">
+    <div style="background:#141A16;border:1px solid #1E2820;border-radius:12px;padding:12px 16px">
+      <div style="font-size:12px;color:#6B7F70">Your Score</div>
+      <div style="font-weight:800;font-size:18px;color:#fff">642 <span style="font-size:12px;color:#00C896;font-weight:600">· Fair — Qualifying for loans</span></div>
+    </div>
+  </div>
+
+  <div class="sec-title">💰 Instant Loans</div>
+  <div class="lender">
+    <div class="lender-av" style="background:rgba(0,150,255,0.15);color:#0096ff">PF</div>
+    <div class="lender-info">
+      <div class="lender-name">Prefr</div>
+      <div class="lender-detail">16% p.a. · Instant approval</div>
+      <div class="lender-amt">Up to ₹25,000</div>
+    </div>
+    <button class="apply-btn" onclick="toast('Opening Prefr...')">Apply</button>
+  </div>
+  <div class="lender">
+    <div class="lender-av" style="background:rgba(255,100,0,0.15);color:#ff6400">FB</div>
+    <div class="lender-info">
+      <div class="lender-name">Fibe</div>
+      <div class="lender-detail">18% p.a. · Same day disbursal</div>
+      <div class="lender-amt">Up to ₹20,000</div>
+    </div>
+    <button class="apply-btn" onclick="toast('Opening Fibe...')">Apply</button>
+  </div>
+  <div class="lender">
+    <div class="lender-av" style="background:rgba(0,200,150,0.15);color:#00C896">KB</div>
+    <div class="lender-info">
+      <div class="lender-name">KreditBee</div>
+      <div class="lender-detail">20% p.a. · 10 minutes</div>
+      <div class="lender-amt">Up to ₹15,000</div>
+    </div>
+    <button class="apply-btn" onclick="toast('Opening KreditBee...')">Apply</button>
+  </div>
+  <div class="lender locked">
+    <div class="lender-av" style="background:#1E2820;color:#6B7F70">🔒</div>
+    <div class="lender-info">
+      <div class="lender-name" style="color:#6B7F70">Jupiter · Kissht · Prefr Pro</div>
+      <div class="lender-detail">Up to ₹5,00,000</div>
+      <div style="font-size:11px;color:#00C896">Unlocks at Month 12</div>
+    </div>
+  </div>
+
+  <div class="sec-title">💳 Credit Cards</div>
+  <div class="cc">
+    <div class="cc-icon">💳</div>
+    <div class="cc-top">YOUR FIRST CREDIT CARD</div>
+    <div class="cc-num">•••• •••• •••• ••••</div>
+    <div class="cc-name">SIRAJ M</div>
+    <div class="cc-sub">Apply below — instant approval with your SlipScore</div>
+  </div>
+
+  <div style="margin-top:14px">
+    <div class="lender">
+      <div class="lender-av" style="background:rgba(0,100,255,0.15);color:#0064ff;font-size:11px;font-weight:800">SBI</div>
+      <div class="lender-info">
+        <div class="lender-name">SBI SimplySAVE</div>
+        <div class="lender-detail">No annual fee · 1% cashback</div>
+        <div class="lender-amt">₹500 joining bonus</div>
+      </div>
+      <button class="apply-btn" onclick="toast('Opening SBI application...')">Apply</button>
+    </div>
+    <div class="lender">
+      <div class="lender-av" style="background:rgba(255,50,50,0.15);color:#ff3232;font-size:11px;font-weight:800">AXIS</div>
+      <div class="lender-info">
+        <div class="lender-name">Axis My Zone</div>
+        <div class="lender-detail">Movies & dining rewards</div>
+        <div class="lender-amt">₹250 welcome gift</div>
+      </div>
+      <button class="apply-btn" onclick="toast('Opening Axis...')">Apply</button>
+    </div>
+    <div class="lender" style="margin-bottom:20px">
+      <div class="lender-av" style="background:rgba(0,200,150,0.15);color:#00C896;font-size:11px;font-weight:800">IDFC</div>
+      <div class="lender-info">
+        <div class="lender-name">IDFC First Classic</div>
+        <div class="lender-detail">Lifetime free · 10X rewards</div>
+        <div class="lender-amt">Best for first-timers</div>
+      </div>
+      <button class="apply-btn" onclick="toast('Opening IDFC...')">Apply</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="tab-pane" id="pane-profile">
+  <div class="prof-head">
+    <div class="prof-av">S</div>
+    <div class="prof-name">Siraj M</div>
+    <div style="font-size:12px;color:#6B7F70">Member since Jan 2026</div>
+    <div class="prof-badge">⭐ Basic Plan · Month 4 of 12</div>
+  </div>
+
+  <div class="sec-title">Bank Account</div>
+  <div class="bank-box" onclick="toast('Managing bank account...')">
+    <div style="font-size:26px;margin-bottom:8px">🏦</div>
+    <div style="font-weight:700;font-size:14px;color:#fff">HDFC Bank ••••4521</div>
+    <div style="font-size:12px;color:#00C896;margin-top:4px">✓ Salary verified — ₹18,000/month</div>
+    <div style="font-size:11px;color:#6B7F70;margin-top:4px">Tap to change</div>
+  </div>
+
+  <div class="sec-title">Account Details</div>
+  <div class="set-row" onclick="toast('Edit name')"><div class="set-icon" style="background:rgba(0,200,150,0.1)">👤</div><div class="set-label">Full Name</div><div class="set-val">Siraj M</div><div class="set-arr">›</div></div>
+  <div class="set-row" onclick="toast('Edit phone')"><div class="set-icon" style="background:rgba(0,150,255,0.1)">📱</div><div class="set-label">Phone</div><div class="set-val">+91 987••</div><div class="set-arr">›</div></div>
+  <div class="set-row" onclick="toast('Edit email')"><div class="set-icon" style="background:rgba(255,150,0,0.1)">✉️</div><div class="set-label">Email</div><div class="set-val">siraj@...</div><div class="set-arr">›</div></div>
+  <div class="set-row" onclick="toast('Edit workplace')"><div class="set-icon" style="background:rgba(150,0,255,0.1)">🏢</div><div class="set-label">Workplace</div><div class="set-val">Salon, Chennai</div><div class="set-arr">›</div></div>
+  <div class="set-row" onclick="toast('Edit salary')"><div class="set-icon" style="background:rgba(0,200,150,0.1)">💰</div><div class="set-label">Monthly Salary</div><div class="set-val">₹18,000</div><div class="set-arr">›</div></div>
+
+  <div class="sec-title">Language</div>
+  <div class="lang-row pad" style="padding-bottom:4px">
+    <div class="lchip on">English</div>
+    <div class="lchip" onclick="toast('Switched to Hindi')">हिंदी</div>
+    <div class="lchip" onclick="toast('Switched to Tamil')">தமிழ்</div>
+    <div class="lchip" onclick="toast('Switching...')">తెలుగు</div>
+    <div class="lchip" onclick="toast('Switching...')">ಕನ್ನಡ</div>
+    <div class="lchip" onclick="toast('Switching...')">मराठी</div>
+    <div class="lchip" onclick="toast('Switching...')">മലയാളം</div>
+    <div class="lchip" onclick="toast('Switching...')">বাংলা</div>
+  </div>
+
+  <div class="sec-title">Support</div>
+  <div class="set-row" onclick="toast('Opening WhatsApp...')"><div class="set-icon" style="background:rgba(0,200,150,0.1)">💬</div><div class="set-label">WhatsApp Support</div><div class="set-arr">›</div></div>
+  <div class="set-row" onclick="toast('Opening Help...')"><div class="set-icon" style="background:rgba(0,150,255,0.1)">❓</div><div class="set-label">Help Center</div><div class="set-arr">›</div></div>
+  <div class="set-row" onclick="toast('Opening Privacy Policy...')"><div class="set-icon" style="background:rgba(255,150,0,0.1)">📋</div><div class="set-label">Privacy Policy</div><div class="set-arr">›</div></div>
+
+  <div style="padding:20px 16px 40px">
+    <button style="width:100%;background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.3);color:#e74c3c;padding:14px;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer" onclick="doLogout()">Log Out</button>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- Bottom Nav -->
+
+  <div class="bnav">
+    <div class="bni on" id="bni-home" onclick="goTab('home')">
+      <div class="bni-icon">🏠</div>
+      <div class="bni-label">Home</div>
+    </div>
+    <div class="bni" id="bni-credit" onclick="goTab('credit')">
+      <div class="bni-icon">📈</div>
+      <div class="bni-label">Credit</div>
+    </div>
+    <div class="bni" id="bni-market" onclick="goTab('market')">
+      <div class="bni-icon">🏪</div>
+      <div class="bni-label">Marketplace</div>
+    </div>
+    <div class="bni" id="bni-profile" onclick="goTab('profile')">
+      <div class="bni-icon">👤</div>
+      <div class="bni-label">Profile</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// LOGIN
+function loginTab(t){
+  document.getElementById('ltab-phone').className=t==='phone'?'ltab on':'ltab';
+  document.getElementById('ltab-email').className=t==='email'?'ltab on':'ltab';
+  document.getElementById('lf-phone').style.display=t==='phone'?'block':'none';
+  document.getElementById('lf-email').style.display=t==='email'?'block':'none';
+  document.getElementById('lf-otp').style.display='none';
+}
+
+function sendOTP(){
+  const v=document.getElementById('ph-inp').value.replace(/\D/g,'');
+  if(v.length<10){toast('Enter a valid 10-digit number');return;}
+  document.getElementById('lf-phone').style.display='none';
+  document.getElementById('lf-otp').style.display='block';
+  document.getElementById('otp-label').textContent='OTP sent to +91 '+v.slice(-10);
+  document.getElementById('o0').focus();
+}
+
+function backLogin(){
+  document.getElementById('lf-otp').style.display='none';
+  document.getElementById('lf-phone').style.display='block';
+}
+
+function oNext(i){
+  const el=document.getElementById('o'+i);
+  if(el.value.length>=1&&i<5)document.getElementById('o'+(i+1)).focus();
+  if(i===5)setTimeout(doLogin,300);
+}
+
+function doLogin(){
+  toast('Welcome to SlipScore! 🎉');
+  setTimeout(()=>{
+    document.getElementById('page-login').classList.remove('show');
+    document.getElementById('page-app').classList.add('show');
+    setTimeout(animateRing,600);
+  },700);
+}
+
+function doLogout(){
+  document.getElementById('page-app').classList.remove('show');
+  document.getElementById('page-login').classList.add('show');
+  goTab('home');
+}
+
+function pickLang(el,lang){
+  document.querySelectorAll('.lang-row .lchip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  const L={en:['WhatsApp Number','Send OTP →'],hi:['WhatsApp नंबर','OTP भेजें →'],ta:['WhatsApp எண்','OTP அனுப்பு →'],te:['WhatsApp నంబర్','OTP పంపండి →'],kn:['WhatsApp ನಂಬರ್','OTP ಕಳುಹಿಸಿ →'],mr:['WhatsApp नंबर','OTP पाठवा →'],ml:['WhatsApp നമ്പർ','OTP അയക്കൂ →'],bn:['WhatsApp নম্বর','OTP পাঠান →']};
+  const l=L[lang]||L.en;
+  document.querySelector('#lf-phone label').textContent=l[0];
+  document.getElementById('otp-btn').textContent=l[1];
+}
+
+// TABS
+function goTab(tab){
+  ['home','credit','market','profile'].forEach(t=>{
+    document.getElementById('pane-'+t).className='tab-pane'+(t===tab?' show':'');
+    document.getElementById('bni-'+t).className='bni'+(t===tab?' on':'');
+  });
+  // Topbar
+  const topbar=document.getElementById('app-topbar');
+  if(tab==='home'){
+    topbar.innerHTML='<div class="tb-left"><div class="tb-greeting">Good morning 👋</div><div class="tb-logo">Slip<span>Score</span></div></div><div class="tb-right"><div class="tb-btn">🔔</div><div class="tb-av">S</div></div>';
+  } else {
+    const titles={credit:'Credit Builder',market:'Marketplace',profile:'My Profile'};
+    topbar.innerHTML='<div class="tb-title">'+titles[tab]+'</div><div class="tb-right"><div class="tb-btn">🔔</div></div>';
+  }
+  if(tab==='credit')setTimeout(animateRing,300);
+  document.querySelector('.tab-content').scrollTop=0;
+}
+
+// SCORE RING ANIMATION
+function animateRing(){
+  const r=document.getElementById('ring-fill');
+  if(r){
+    // 642/900 = 71.3%, circumference = 2*π*70 ≈ 440
+    // dashoffset = 440 - (440 * 0.713) = 440 - 313.7 = 126.3
+    r.style.strokeDashoffset='126';
+  }
+}
+
+// TOAST
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2500);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html lang="en" style="background:#0A0F0D">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SlipScore</title>
+<style>
+html,body{background:#0A0F0D!important;color:#E8F0EA;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:16px;overflow-x:hidden}
+*{box-sizing:border-box}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;background:#0A0F0D;border-bottom:1px solid #1E2820;display:flex;justify-content:space-between;align-items:center;padding:14px 20px}
+.logo{font-weight:900;font-size:20px;color:#fff;letter-spacing:-0.5px}.logo span{color:#00C896}
+.nav-btn{background:#00C896;color:#0A0F0D;border:none;padding:9px 18px;border-radius:50px;font-weight:700;font-size:13px;cursor:pointer}
+.hero{background:#0A0F0D;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 20px 60px}
+.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,200,150,0.12);border:1px solid rgba(0,200,150,0.35);color:#00C896;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:600;margin-bottom:28px}
+.dot{width:6px;height:6px;border-radius:50%;background:#00C896;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+h1{font-weight:900;font-size:clamp(34px,8vw,64px);line-height:1.05;letter-spacing:-2px;color:#fff;margin-bottom:14px}
+.green{color:#00C896}
+.tags{margin-bottom:36px;display:flex;flex-direction:column;gap:4px}
+.tag{font-size:clamp(14px,3vw,17px);color:#6B7F70}.tag b{color:#E8F0EA}
+.lang-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-bottom:30px}
+.lp{background:#141A16;border:1px solid #1E2820;color:#6B7F70;padding:5px 13px;border-radius:50px;font-size:12px;cursor:pointer;transition:all 0.15s;user-select:none}
+.lp:hover,.lp.on{border-color:#00C896;color:#00C896;background:rgba(0,200,150,0.1)}
+.form-row{display:flex;width:100%;max-width:380px;background:#141A16;border:1px solid #1E2820;border-radius:50px;padding:5px 5px 5px 18px}
+.form-row:focus-within{border-color:#00C896}
+.form-row input{flex:1;background:none;border:none;outline:none;color:#E8F0EA;font-size:14px;min-width:0}
+.form-row input::placeholder{color:#6B7F70}
+.form-row button{background:#00C896;color:#0A0F0D;border:none;padding:10px 18px;border-radius:50px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
+.ok{display:none;background:rgba(0,200,150,0.1);border:1px solid rgba(0,200,150,0.3);color:#00C896;padding:11px 20px;border-radius:50px;font-size:13px;margin-top:8px}
+.hn{font-size:12px;color:#6B7F70;margin-top:10px}.hn span{color:#00C896}
+.stats{background:#0A0F0D;display:flex;flex-wrap:wrap;border-top:1px solid #1E2820;border-bottom:1px solid #1E2820}
+.stat{flex:1;min-width:130px;text-align:center;padding:20px 16px;border-right:1px solid #1E2820}
+.stat:last-child{border-right:none}
+.sn{font-weight:900;font-size:24px;color:#00C896;line-height:1;margin-bottom:5px}
+.sl{font-size:11px;color:#6B7F70;line-height:1.4}
+@media(max-width:580px){.stat{border-right:none;border-bottom:1px solid #1E2820}.stat:last-child{border-bottom:none}}
+.sec{background:#0A0F0D;padding:70px 20px;max-width:860px;margin:0 auto}
+.lbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#00C896;margin-bottom:14px;font-weight:600}
+.stitle{font-weight:800;font-size:clamp(24px,5vw,38px);color:#fff;line-height:1.15;letter-spacing:-1px;margin-bottom:36px}
+.steps{display:flex;flex-direction:column;gap:8px}
+.step{display:flex;gap:18px;padding:22px;background:#141A16;border:1px solid #1E2820;border-radius:14px}
+.sn2{font-weight:900;font-size:26px;color:#1E2820;line-height:1;width:36px;flex-shrink:0}
+.step h3{font-weight:800;font-size:15px;color:#fff;margin-bottom:5px}
+.step p{font-size:13px;color:#6B7F70;line-height:1.6}.step p b{color:#00C896;font-weight:600}
+.midsec{background:#111810;border-top:1px solid #1E2820;border-bottom:1px solid #1E2820;padding:70px 20px}
+.midinner{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:600px){.midinner{grid-template-columns:1fr}}
+.mtext h2{font-weight:800;font-size:clamp(20px,4vw,32px);color:#fff;letter-spacing:-0.8px;margin-bottom:10px;line-height:1.2}
+.mtext p{color:#6B7F70;font-size:13px;line-height:1.7;margin-bottom:18px}
+.ci{display:flex;align-items:center;gap:9px;font-size:12px;color:#6B7F70;margin-bottom:9px}
+.ci .tk{color:#00C896;font-size:15px}
+.phone{background:#1a1a1a;border-radius:24px;padding:16px 13px;border:2px solid #2a2a2a;max-width:240px;margin:0 auto}
+.ph{display:flex;align-items:center;gap:9px;padding-bottom:11px;border-bottom:1px solid #2a2a2a;margin-bottom:11px}
+.av{width:30px;height:30px;border-radius:50%;background:#00C896;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#0A0F0D}
+.pn{font-size:12px;font-weight:700;color:#fff}.ps{font-size:9px;color:#00C896}
+.msgs{display:flex;flex-direction:column;gap:6px}
+.mi{background:#2a2a2a;color:#e0e0e0;border-radius:12px;border-bottom-left-radius:2px;align-self:flex-start;max-width:88%;padding:7px 11px;font-size:11px;line-height:1.5}
+.mo{background:#005c4b;color:#e0e0e0;border-radius:12px;border-bottom-right-radius:2px;align-self:flex-end;max-width:88%;padding:7px 11px;font-size:11px;line-height:1.5}
+.mt{font-size:8px;color:#6B7F70;margin-top:1px}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:36px}
+.fc{background:#141A16;border:1px solid #1E2820;border-radius:14px;padding:22px}
+.fi{font-size:26px;margin-bottom:12px}
+.fc h3{font-weight:800;font-size:15px;color:#fff;margin-bottom:5px}
+.fc p{font-size:12px;color:#6B7F70;line-height:1.6}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;max-width:860px;margin:40px auto 0}
+.pc{background:#141A16;border:1px solid #1E2820;border-radius:18px;padding:26px 20px;text-align:center}
+.pc.pop{border-color:#00C896}
+.pb{display:inline-block;background:#1E2820;color:#6B7F70;font-size:10px;font-weight:700;padding:3px 11px;border-radius:50px;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.pb.on{background:#00C896;color:#0A0F0D}
+.pr{font-weight:900;font-size:38px;color:#fff;line-height:1;margin-bottom:3px}
+.pr sup{font-size:18px;vertical-align:super}
+.pp{font-size:12px;color:#6B7F70;margin-bottom:18px}
+.pf{list-style:none;text-align:left;margin-bottom:18px;display:flex;flex-direction:column;gap:8px}
+.pf li{display:flex;gap:9px;font-size:12px;color:#E8F0EA;align-items:flex-start}
+.pf li::before{content:'✓';color:#00C896;font-weight:800;flex-shrink:0}
+.pcta{width:100%;background:#1E2820;color:#E8F0EA;border:none;padding:12px;border-radius:50px;font-weight:700;font-size:14px;cursor:pointer}
+.pcta.on{background:#00C896;color:#0A0F0D}
+.pnote{font-size:11px;color:#6B7F70;margin-top:9px}.pnote b{color:#00C896}
+.ftc{background:#0A0F0D;text-align:center;padding:70px 20px;position:relative;overflow:hidden}
+.ftc::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:400px;height:280px;background:radial-gradient(circle,rgba(0,200,150,0.08) 0%,transparent 70%)}
+.ftc h2{font-weight:900;font-size:clamp(24px,5vw,40px);color:#fff;letter-spacing:-1.5px;margin-bottom:12px;line-height:1.1}
+.ftc p{font-size:14px;color:#6B7F70;margin-bottom:24px}
+.bigbtn{background:#00C896;color:#0A0F0D;border:none;padding:15px 36px;border-radius:50px;font-weight:700;font-size:15px;cursor:pointer}
+footer{background:#0A0F0D;padding:22px;text-align:center;border-top:1px solid #1E2820;font-size:12px;color:#6B7F70}
+footer span{color:#00C896}
+.fnote{text-align:center;margin-top:18px;font-size:12px;color:#6B7F70}
+.fnote span{color:#00C896}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Slip<span>Score</span></div>
+  <button class="nav-btn" id="navbtn" onclick="go()">Join Waitlist</button>
+</nav>
+
+<div class="hero">
+  <div class="badge"><div class="dot"></div><span id="bdg">Now accepting early members across India</span></div>
+  <h1 id="htitle">Your <span class="green">Payslip.</span><br>Your Credit.<br>Your Loan.</h1>
+
+  <div class="lang-bar">
+    <div class="lp on">English</div>
+    <div class="lp">हिंदी</div>
+    <div class="lp">தமிழ்</div>
+    <div class="lp">తెలుగు</div>
+    <div class="lp">ಕನ್ನಡ</div>
+    <div class="lp">मराठी</div>
+    <div class="lp">മലയാളം</div>
+    <div class="lp">বাংলা</div>
+  </div>
+
+  <div class="tags">
+    <div class="tag"><b id="tg1">Build your financial identity in 12 months.</b></div>
+    <div class="tag" id="tg2">From cash salary to bank loan — <b>guaranteed.</b></div>
+    <div class="tag" id="tg3">No payslip? <b>No problem.</b></div>
+  </div>
+
+  <div style="width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:8px" id="waitlist">
+    <div class="form-row">
+      <input type="tel" id="ph" placeholder="Enter your WhatsApp number"/>
+      <button id="jbtn" onclick="join()">Join Free →</button>
+    </div>
+    <div class="ok" id="ok">✓ You're on the list! We'll WhatsApp you soon.</div>
+    <div class="hn" id="hn">100% free to join. <span>No payslip needed to start.</span></div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="sn">500M+</div><div class="sl" id="st1">Informal workers<br>in India</div></div>
+  <div class="stat"><div class="sn" id="stprice">₹200</div><div class="sl" id="st2">Per month.<br>Less than one chai.</div></div>
+  <div class="stat"><div class="sn">12</div><div class="sl" id="st3">Months to your<br>guaranteed loan</div></div>
+  <div class="stat"><div class="sn" id="stback">₹1,900</div><div class="sl" id="st4">Back in your pocket<br>after 12 months</div></div>
+</div>
+
+<div class="sec">
+  <div class="lbl" id="hlbl">How it works</div>
+  <div class="stitle" id="htit">Four steps to your<br>financial identity</div>
+  <div class="steps">
+    <div class="step"><div class="sn2">01</div><div><h3 id="s1t">Sign up on WhatsApp — free</h3><p id="s1d">Message SlipScore on WhatsApp. Tell us your name, salary, and where you work. Takes <b>3 minutes.</b> No documents needed.</p></div></div>
+    <div class="step"><div class="sn2">02</div><div><h3 id="s2t">Pay ₹200/month — build your history</h3><p id="s2d">Pay via UPI every month. We generate your <b>professional payslip</b> and report to CIBIL every month.</p></div></div>
+    <div class="step"><div class="sn2">03</div><div><h3 id="s3t">12 months — complete your profile</h3><p id="s3d">After 12 payments you have <b>12 payslips, verified income profile, and CIBIL score above 700.</b></p></div></div>
+    <div class="step"><div class="sn2">04</div><div><h3 id="s4t">Get your loan — instantly</h3><p id="s4d">One button. Your profile goes to our NBFC partners. <b>Money in 2 hours.</b> Nobody comes to your workplace. Ever.</p></div></div>
+  </div>
+</div>
+
+<div class="midsec">
+  <div class="midinner">
+    <div class="mtext">
+      <div class="lbl">Works on WhatsApp</div>
+      <h2 id="wpt">Everything happens<br>on your phone</h2>
+      <p id="wpd">No app to download. Just WhatsApp — which you already use every day. Simple messages in your language.</p>
+      <div class="ci"><span class="tk">✓</span><span id="c1">Works on any Android phone</span></div>
+      <div class="ci"><span class="tk">✓</span><span id="c2">Works on slow 3G internet</span></div>
+      <div class="ci"><span class="tk">✓</span><span id="c3">Available in 8 Indian languages</span></div>
+      <div class="ci"><span class="tk">✓</span><span id="c4">Pay via UPI — no card needed</span></div>
+    </div>
+    <div class="phone">
+      <div class="ph"><div class="av">SS</div><div><div class="pn">SlipScore</div><div class="ps">● Online</div></div></div>
+      <div class="msgs">
+        <div class="mi" id="ch1">Hi! I work at a salon in Chennai. Can I get a payslip?</div>
+        <div class="mt" style="padding-left:3px">10:02 AM</div>
+        <div class="mo" id="ch2">Namaste! First payslip FREE ✅<br>What is your monthly salary?</div>
+        <div class="mt" style="text-align:right;padding-right:3px">10:02 AM</div>
+        <div class="mi" id="ch3">₹18,000/month</div>
+        <div class="mt" style="padding-left:3px">10:03 AM</div>
+        <div class="mo" id="ch4">✅ Payslip ready!<br>📄 Ravi_Nov2025.pdf<br>Join 12-month plan for guaranteed loan. Ready?</div>
+        <div class="mt" style="text-align:right;padding-right:3px">10:03 AM</div>
+        <div class="mi" id="ch5">Yes! How to pay? 🙏</div>
+        <div class="mt" style="padding-left:3px">10:04 AM</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="lbl">What you get</div>
+  <div class="stitle" id="ftit">Everything in one plan</div>
+  <div class="feats">
+    <div class="fc"><div class="fi">📄</div><h3 id="f1t">Monthly Payslip</h3><p id="f1d">Professional PDF every month. Valid for bank loans, rental, and visa applications.</p></div>
+    <div class="fc"><div class="fi">📈</div><h3 id="f2t">CIBIL Score Building</h3><p id="f2d">Every payment reported to CIBIL. Go from zero to 700+ in 12 months.</p></div>
+    <div class="fc"><div class="fi">💰</div><h3 id="f3t">₹1,900 Back</h3><p id="f3d">Savings returned after 12 months minus our small fee. Not a cost — it's savings.</p></div>
+    <div class="fc"><div class="fi">⚡</div><h3 id="f4t">Instant Loan</h3><p id="f4d">Pre-negotiated with top NBFCs. 12 months done — loan in 2 hours. Guaranteed.</p></div>
+    <div class="fc"><div class="fi">🔒</div><h3 id="f5t">100% Private</h3><p id="f5d">Digital repayments. Nobody visits your workplace. Ever.</p></div>
+    <div class="fc"><div class="fi">🇮🇳</div><h3 id="f6t">8 Indian Languages</h3><p id="f6d">Hindi, Tamil, Telugu, Kannada, Marathi, Malayalam, Bengali, English.</p></div>
+  </div>
+</div>
+
+<div style="background:#0A0F0D;padding:0 20px 70px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="lbl" style="display:inline-block">Simple pricing</div><br>
+    <div class="stitle" style="margin-bottom:0" id="ptit">Three tiers. One goal.<br>Your financial freedom.</div>
+  </div>
+  <div class="pgrid">
+    <div class="pc">
+      <div class="pb" id="pb1">Basic</div>
+      <div class="pr"><sup>₹</sup><span id="pa1">200</span></div>
+      <div class="pp" id="pp1">per month · 12 months</div>
+      <ul class="pf"><li id="pf11">Monthly payslip PDF</li><li id="pf12">CIBIL reporting every month</li><li id="pf13">Verified income profile</li><li id="pf14">₹1,900 returned after 12 months</li><li id="pf15">WhatsApp support</li></ul>
+      <button class="pcta" onclick="go()" id="pb1btn">Get Started</button>
+      <div class="pnote">Loan up to <b id="pl1">₹25,000</b></div>
+    </div>
+    <div class="pc pop">
+      <div class="pb on" id="pb2">⭐ Most Popular</div>
+      <div class="pr"><sup>₹</sup><span id="pa2">500</span></div>
+      <div class="pp" id="pp2">per month · 12 months</div>
+      <ul class="pf"><li id="pf21">Everything in Basic</li><li id="pf22">Higher credit commitment</li><li id="pf23">Priority loan matching</li><li id="pf24">Income certificate</li><li id="pf25">More savings returned</li></ul>
+      <button class="pcta on" onclick="go()" id="pb2btn">Get Started</button>
+      <div class="pnote">Loan up to <b id="pl2">₹50,000</b></div>
+    </div>
+    <div class="pc">
+      <div class="pb" id="pb3">Pro</div>
+      <div class="pr"><sup>₹</sup><span id="pa3">1,000</span></div>
+      <div class="pp" id="pp3">per month · 12 months</div>
+      <ul class="pf"><li id="pf31">Everything in Plus</li><li id="pf32">Maximum credit impact</li><li id="pf33">Dedicated loan advisor</li><li id="pf34">Employment letter</li><li id="pf35">Maximum savings returned</li></ul>
+      <button class="pcta" onclick="go()" id="pb3btn">Get Started</button>
+      <div class="pnote">Loan up to <b id="pl3">₹1,00,000</b></div>
+    </div>
+  </div>
+  <div class="fnote" id="fnote">First payslip is <span>completely free.</span> No card needed.</div>
+</div>
+
+<div class="ftc">
+  <h2 id="fth">Stop being financially<br>invisible.</h2>
+  <p id="ftp">500 million workers in India deserve a financial identity.<br>Start building yours today.</p>
+  <button class="bigbtn" onclick="go()" id="ftbtn">Join SlipScore Free →</button>
+</div>
+
+<footer>© 2025 SlipScore · Built for India's workforce · <span>slipscore.in</span></footer>
+
+<script>
+const D={
+'English':{bdg:'Now accepting early members across India',ht:'Your <span class="green">Payslip.</span><br>Your Credit.<br>Your Loan.',t1:'Build your financial identity in 12 months.',t2:'From cash salary to bank loan — <b>guaranteed.</b>',t3:'No payslip? <b>No problem.</b>',ph:'Enter your WhatsApp number',jb:'Join Free →',hn:'100% free to join. <span>No payslip needed to start.</span>',nb:'Join Waitlist',st1:'Informal workers<br>in India',st2:'Per month.<br>Less than one chai.',st3:'Months to your<br>guaranteed loan',st4:'Back in your pocket<br>after 12 months',sp:'₹200',sb:'₹1,900',hl:'How it works',htt:'Four steps to your<br>financial identity',s1t:'Sign up on WhatsApp — free',s1d:'Message SlipScore on WhatsApp. Tell us your name, salary, and where you work. Takes <b>3 minutes.</b> No documents needed.',s2t:'Pay ₹200/month — build your history',s2d:'Pay via UPI every month. We generate your <b>professional payslip</b> and report to CIBIL every month.',s3t:'12 months — complete your profile',s3d:'After 12 payments you have <b>12 payslips, verified income profile, and CIBIL score above 700.</b>',s4t:'Get your loan — instantly',s4d:'One button. Your profile goes to our NBFC partners. <b>Money in 2 hours.</b> Nobody comes to your workplace. Ever.',wpt:'Everything happens<br>on your phone',wpd:'No app to download. Just WhatsApp — which you already use every day.',c1:'Works on any Android phone',c2:'Works on slow 3G internet',c3:'Available in 8 Indian languages',c4:'Pay via UPI — no card needed',ch1:'Hi! I work at a salon in Chennai. Can I get a payslip?',ch2:'Namaste! First payslip FREE ✅<br>What is your monthly salary?',ch3:'₹18,000/month',ch4:'✅ Payslip ready!<br>📄 Ravi_Nov2025.pdf<br>Join 12-month plan. Ready?',ch5:'Yes! How to pay? 🙏',ft:'Everything in one plan',f1t:'Monthly Payslip',f1d:'Professional PDF every month. Valid for bank loans, rental, and visa.',f2t:'CIBIL Score Building',f2d:'Every payment reported to CIBIL. Zero to 700+ in 12 months.',f3t:'₹1,900 Back',f3d:'Savings returned after 12 months minus our small fee.',f4t:'Instant Loan',f4d:'Pre-negotiated with top NBFCs. 12 months — loan in 2 hours.',f5t:'100% Private',f5d:'Digital repayments. Nobody visits your workplace. Ever.',f6t:'8 Indian Languages',f6d:'Hindi, Tamil, Telugu, Kannada, Marathi, Malayalam, Bengali, English.',pt:'Three tiers. One goal.<br>Your financial freedom.',pb1:'Basic',pb2:'⭐ Most Popular',pb3:'Pro',p11:'Monthly payslip PDF',p12:'CIBIL reporting every month',p13:'Verified income profile',p14:'₹1,900 returned after 12 months',p15:'WhatsApp support',p21:'Everything in Basic',p22:'Higher credit commitment',p23:'Priority loan matching',p24:'Income certificate',p25:'More savings returned',p31:'Everything in Plus',p32:'Maximum credit impact',p33:'Dedicated loan advisor',p34:'Employment letter',p35:'Maximum savings returned',bt1:'Get Started',bt2:'Get Started',bt3:'Get Started',l1:'₹25,000',l2:'₹50,000',l3:'₹1,00,000',fn:'First payslip is <span>completely free.</span> No card needed.',fth:'Stop being financially<br>invisible.',ftp:'500 million workers in India deserve a financial identity.<br>Start building yours today.',ftb:'Join SlipScore Free →'},
+
+'हिंदी':{bdg:'अब भारत भर में सदस्य स्वीकार किए जा रहे हैं',ht:'आपकी <span class="green">पगार पर्ची।</span><br>आपका क्रेडिट।<br>आपका लोन।',t1:'12 महीनों में अपनी आर्थिक पहचान बनाएं।',t2:'नकद वेतन से बैंक लोन तक — <b>गारंटीड।</b>',t3:'पगार पर्ची नहीं? <b>कोई बात नहीं।</b>',ph:'अपना WhatsApp नंबर दर्ज करें',jb:'मुफ्त जुड़ें →',hn:'100% मुफ्त। <span>पगार पर्ची जरूरी नहीं।</span>',nb:'वेटलिस्ट जॉइन करें',st1:'भारत में<br>अनौपचारिक मजदूर',st2:'प्रति माह।<br>एक चाय से भी कम।',st3:'महीने में<br>गारंटीड लोन',st4:'12 महीने बाद<br>आपकी जेब में वापस',sp:'₹200',sb:'₹1,900',hl:'यह कैसे काम करता है',htt:'आपकी आर्थिक पहचान के<br>चार कदम',s1t:'WhatsApp पर साइन अप करें — मुफ्त',s1d:'SlipScore को WhatsApp करें। नाम, वेतन, कार्यस्थल बताएं। <b>3 मिनट।</b> कोई दस्तावेज़ नहीं।',s2t:'₹200/माह दें — इतिहास बनाएं',s2d:'UPI से दें। हम <b>पेशेवर पगार पर्ची</b> बनाते हैं और CIBIL को रिपोर्ट करते हैं।',s3t:'12 महीने — प्रोफाइल पूरी करें',s3d:'12 महीने बाद <b>12 पगार पर्चियां, सत्यापित आय प्रोफाइल और 700+ CIBIL स्कोर।</b>',s4t:'लोन लें — तुरंत',s4d:'एक बटन दबाएं। NBFC को प्रोफाइल जाती है। <b>2 घंटे में पैसे।</b> कार्यस्थल पर कोई नहीं आएगा।',wpt:'सब कुछ आपके<br>फोन पर होता है',wpd:'कोई ऐप नहीं। बस WhatsApp — जो आप पहले से इस्तेमाल करते हैं।',c1:'किसी भी Android फोन पर',c2:'धीमे 3G इंटरनेट पर भी',c3:'8 भारतीय भाषाओं में',c4:'UPI से — कोई कार्ड नहीं',ch1:'नमस्ते! मैं चेन्नई में सैलून में काम करता हूं। पगार पर्ची मिलेगी?',ch2:'नमस्ते! पहली पगार पर्ची बिल्कुल मुफ्त ✅<br>मासिक वेतन कितना है?',ch3:'₹18,000/माह',ch4:'✅ पगार पर्ची तैयार!<br>📄 Ravi_Nov2025.pdf<br>12 महीने की योजना में शामिल हों।',ch5:'हां! कैसे पेमेंट करें? 🙏',ft:'एक योजना में सब कुछ',f1t:'मासिक पगार पर्ची',f1d:'हर महीने PDF। बैंक लोन, किराया और वीजा के लिए।',f2t:'CIBIL स्कोर निर्माण',f2d:'हर भुगतान CIBIL को। 12 महीनों में शून्य से 700+।',f3t:'₹1,900 वापस',f3d:'12 महीने बाद बचत वापस, छोटी फीस कम।',f4t:'तुरंत लोन',f4d:'NBFCs के साथ पूर्व-समझौता। 2 घंटे में लोन।',f5t:'100% निजी',f5d:'डिजिटल भुगतान। कार्यस्थल पर कोई नहीं आएगा।',f6t:'8 भारतीय भाषाएं',f6d:'हिंदी, तमिल, तेलुगु, कन्नड़, मराठी, मलयालम, बंगाली, अंग्रेजी।',pt:'तीन स्तर। एक लक्ष्य।<br>आपकी आर्थिक आजादी।',pb1:'बेसिक',pb2:'⭐ सबसे लोकप्रिय',pb3:'प्रो',p11:'मासिक पगार पर्ची PDF',p12:'हर महीने CIBIL रिपोर्टिंग',p13:'सत्यापित आय प्रोफाइल',p14:'12 महीने बाद ₹1,900 वापस',p15:'WhatsApp सपोर्ट',p21:'बेसिक में सब कुछ',p22:'उच्च क्रेडिट प्रतिबद्धता',p23:'प्राथमिकता लोन मिलान',p24:'आय प्रमाण पत्र',p25:'अधिक बचत वापस',p31:'प्लस में सब कुछ',p32:'अधिकतम क्रेडिट प्रभाव',p33:'समर्पित लोन सलाहकार',p34:'रोजगार पत्र',p35:'अधिकतम बचत वापस',bt1:'शुरू करें',bt2:'शुरू करें',bt3:'शुरू करें',l1:'₹25,000',l2:'₹50,000',l3:'₹1,00,000',fn:'पहली पगार पर्ची <span>बिल्कुल मुफ्त।</span> कोई कार्ड नहीं।',fth:'आर्थिक रूप से<br>अदृश्य होना बंद करें।',ftp:'भारत में 50 करोड़ मजदूर आर्थिक पहचान के हकदार हैं।<br>आज ही शुरू करें।',ftb:'SlipScore से मुफ्त जुड़ें →'},
+
+'தமிழ்':{bdg:'இப்போது இந்தியா முழுவதும் உறுப்பினர்களை ஏற்கிறோம்',ht:'உங்கள் <span class="green">சம்பள சீட்டு।</span><br>உங்கள் கடன் மதிப்பு।<br>உங்கள் கடன்।',t1:'12 மாதங்களில் உங்கள் நிதி அடையாளத்தை உருவாக்குங்கள்.',t2:'பணச் சம்பளத்திலிருந்து வங்கிக் கடன் வரை — <b>உத்தரவாதம்।</b>',t3:'சம்பள சீட்டு இல்லையா? <b>பரவாயில்லை।</b>',ph:'உங்கள் WhatsApp எண்ணை உள்ளிடுக',jb:'இலவசமாக சேருங்கள் →',hn:'100% இலவசம். <span>சம்பள சீட்டு தேவையில்லை.</span>',nb:'காத்திருப்பு பட்டியலில் சேர்',st1:'இந்தியாவில்<br>தொழிலாளர்கள்',st2:'மாதம் ஒரு முறை।<br>ஒரு சாப்பாட்டை விட குறைவு.',st3:'மாதங்களில்<br>உத்தரவாதமான கடன்',st4:'12 மாதங்கள் பிறகு<br>திரும்பப் பெறுவீர்கள்',sp:'₹200',sb:'₹1,900',hl:'எப்படி வேலை செய்கிறது',htt:'உங்கள் நிதி அடையாளத்திற்கு<br>நான்கு படிகள்',s1t:'WhatsApp-ல் பதிவு செய்யுங்கள் — இலவசம்',s1d:'SlipScore-க்கு WhatsApp செய்யுங்கள். பெயர், சம்பளம், வேலை இடம் சொல்லுங்கள். <b>3 நிமிடம்.</b>',s2t:'மாதம் ₹200 செலுத்துங்கள்',s2d:'UPI மூலம் செலுத்துங்கள். <b>தொழில்முறை சம்பள சீட்டு</b> உருவாக்கி CIBIL-க்கு அறிவிப்போம்.',s3t:'12 மாதங்கள் — சுயவிவரம் நிறைவு',s3d:'12 மாதங்களுக்குப் பிறகு <b>12 சம்பள சீட்டுகள், சரிபார்க்கப்பட்ட வருமான சுயவிவரம், 700+ CIBIL மதிப்பெண்.</b>',s4t:'கடன் பெறுங்கள் — உடனடியாக',s4d:'ஒரு பொத்தான் அழுத்துங்கள். NBFC பங்காளர்களுக்கு செல்கிறது. <b>2 மணி நேரத்தில் பணம்.</b> யாரும் வர மாட்டார்கள்.',wpt:'எல்லாமே உங்கள்<br>தொலைபேசியில் நடக்கும்',wpd:'ஆப் பதிவிறக்கம் தேவையில்லை. WhatsApp மட்டும் போதும்.',c1:'எந்த Android தொலைபேசியிலும்',c2:'மெதுவான 3G இணையத்திலும்',c3:'8 இந்திய மொழிகளில்',c4:'UPI மூலம் — கார்டு தேவையில்லை',ch1:'வணக்கம்! நான் சென்னையில் சலூனில் வேலை செய்கிறேன். சம்பள சீட்டு கிடைக்குமா?',ch2:'வணக்கம்! முதல் சம்பள சீட்டு இலவசம் ✅<br>உங்கள் மாத சம்பளம் என்ன?',ch3:'₹18,000/மாதம்',ch4:'✅ சம்பள சீட்டு தயார்!<br>📄 Ravi_Nov2025.pdf<br>12 மாத திட்டத்தில் சேருங்கள்.',ch5:'ஆமா! எப்படி செலுத்துவது? 🙏',ft:'ஒரே திட்டத்தில் எல்லாமே',f1t:'மாதாந்திர சம்பள சீட்டு',f1d:'ஒவ்வொரு மாதம் PDF. வங்கி கடன், வாடகை, விசாவிற்கு.',f2t:'CIBIL மதிப்பெண் உருவாக்கம்',f2d:'ஒவ்வொரு கட்டணமும் CIBIL-க்கு. 12 மாதங்களில் பூஜ்ஜியத்திலிருந்து 700+.',f3t:'₹1,900 திரும்பப் பெறுங்கள்',f3d:'12 மாதங்களுக்குப் பிறகு உங்கள் சேமிப்பு திரும்பும்.',f4t:'உடனடி கடன்',f4d:'சிறந்த NBFC-களுடன் முன் ஒப்பந்தம். 2 மணி நேரத்தில் கடன்.',f5t:'100% தனியுரிமை',f5d:'டிஜிட்டல் திருப்பிச் செலுத்துதல். யாரும் வர மாட்டார்கள்.',f6t:'8 இந்திய மொழிகள்',f6d:'தமிழ், இந்தி, தெலுங்கு, கன்னடம், மராத்தி, மலையாளம், வங்காளம், ஆங்கிலம்.',pt:'மூன்று நிலைகள். ஒரே இலக்கு.<br>உங்கள் நிதி சுதந்திரம்.',pb1:'அடிப்படை',pb2:'⭐ மிகவும் பிரபலமானது',pb3:'நிபுணர்',p11:'மாதாந்திர சம்பள சீட்டு PDF',p12:'ஒவ்வொரு மாதம் CIBIL அறிவிப்பு',p13:'சரிபார்க்கப்பட்ட வருமான சுயவிவரம்',p14:'12 மாதங்கள் பிறகு ₹1,900 திரும்பும்',p15:'WhatsApp ஆதரவு',p21:'அடிப்படையில் உள்ள எல்லாமே',p22:'அதிக கடன் உறுதிமொழி',p23:'முன்னுரிமை கடன் பொருத்தம்',p24:'வருமான சான்றிதழ்',p25:'அதிக சேமிப்பு திரும்பும்',p31:'பிளஸ்-ல் உள்ள எல்லாமே',p32:'அதிகபட்ச கடன் மதிப்பெண் தாக்கம்',p33:'அர்ப்பணிப்பு கடன் ஆலோசகர்',p34:'வேலை கடிதம்',p35:'அதிகபட்ச சேமிப்பு திரும்பும்',bt1:'தொடங்குங்கள்',bt2:'தொடங்குங்கள்',bt3:'தொடங்குங்கள்',l1:'₹25,000',l2:'₹50,000',l3:'₹1,00,000',fn:'முதல் சம்பள சீட்டு <span>முற்றிலும் இலவசம்.</span> கார்டு தேவையில்லை.',fth:'நிதி ரீதியாக<br>கண்ணுக்கு தெரியாமல் இருப்பதை நிறுத்துங்கள்.',ftp:'இந்தியாவில் 50 கோடி தொழிலாளர்கள் நிதி அடையாளத்திற்கு தகுதியானவர்கள்.<br>இன்றே தொடங்குங்கள்.',ftb:'SlipScore-ல் இலவசமாக சேருங்கள் →'},
+
+'తెలుగు':{bdg:'ఇప్పుడు భారతదేశం అంతటా సభ్యులను స్వీకరిస్తున్నాం',ht:'మీ <span class="green">జీతం స్లిప్।</span><br>మీ క్రెడిట్।<br>మీ లోన్।',t1:'12 నెలల్లో మీ ఆర్థిక గుర్తింపు నిర్మించుకోండి.',t2:'నగదు జీతం నుండి బ్యాంక్ లోన్ వరకు — <b>గ్యారంటీ।</b>',t3:'జీతం స్లిప్ లేదా? <b>సమస్య లేదు।</b>',ph:'మీ WhatsApp నంబర్ నమోదు చేయండి',jb:'ఉచితంగా చేరండి →',hn:'100% ఉచితం. <span>జీతం స్లిప్ అవసరం లేదు.</span>',nb:'వెయిట్‌లిస్ట్‌లో చేరండి',st1:'భారతదేశంలో<br>కార్మికులు',st2:'నెలకు।<br>ఒక భోజనం కంటే తక్కువ.',st3:'నెలల్లో<br>గ్యారంటీ లోన్',st4:'12 నెలల తర్వాత<br>తిరిగి వస్తుంది',sp:'₹200',sb:'₹1,900',hl:'ఎలా పనిచేస్తుంది',htt:'మీ ఆర్థిక గుర్తింపుకు<br>నాలుగు దశలు',s1t:'WhatsApp లో నమోదు — ఉచితం',s1d:'SlipScore కి WhatsApp చేయండి. పేరు, జీతం, పని స్థలం చెప్పండి. <b>3 నిమిషాలు.</b>',s2t:'నెలకు ₹200 చెల్లించండి',s2d:'UPI ద్వారా చెల్లించండి. <b>వృత్తిపరమైన జీతం స్లిప్</b> తయారు చేసి CIBIL కి నివేదిస్తాం.',s3t:'12 నెలలు — ప్రొఫైల్ పూర్తి',s3d:'12 చెల్లింపుల తర్వాత <b>12 జీతం స్లిప్లు, ధృవీకరించబడిన ఆదాయ ప్రొఫైల్, 700+ CIBIL స్కోర్।</b>',s4t:'లోన్ పొందండి — వెంటనే',s4d:'ఒక బటన్ నొక్కండి. NBFC భాగస్వాములకు వెళ్తుంది. <b>2 గంటల్లో డబ్బు.</b>',wpt:'అన్నీ మీ<br>ఫోన్ లో జరుగుతాయి',wpd:'యాప్ అవసరం లేదు. WhatsApp మాత్రమే చాలు.',c1:'ఏ Android ఫోన్ లోనైనా',c2:'నెమ్మది నెట్ లోనూ',c3:'8 భారతీయ భాషల్లో',c4:'UPI ద్వారా — కార్డు అవసరం లేదు',ch1:'నమస్కారం! నేను చెన్నైలో సలూన్ లో పని చేస్తున్నాను. జీతం స్లిప్ ఇవ్వగలరా?',ch2:'నమస్కారం! మొదటి జీతం స్లిప్ ఉచితం ✅<br>నెలసరి జీతం ఎంత?',ch3:'₹18,000/నెల',ch4:'✅ జీతం స్లిప్ రెడీ!<br>📄 Ravi_Nov2025.pdf<br>12 నెలల ప్లాన్ లో చేరండి.',ch5:'అవును! ఎలా చెల్లించాలి? 🙏',ft:'ఒక్క ప్లాన్ లో అన్నీ',f1t:'నెలసరి జీతం స్లిప్',f1d:'ప్రతి నెల PDF. లోన్లు, అద్దె, వీసాకు.',f2t:'CIBIL స్కోర్ నిర్మాణం',f2d:'ప్రతి చెల్లింపు CIBIL కి. 12 నెలల్లో సున్నా నుండి 700+.',f3t:'₹1,900 తిరిగి',f3d:'12 నెలల తర్వాత సేవింగ్స్ తిరిగి.',f4t:'వెంటనే లోన్',f4d:'NBFCలతో ముందస్తు ఒప్పందం. 2 గంటల్లో లోన్.',f5t:'100% ప్రైవేట్',f5d:'డిజిటల్ చెల్లింపులు. ఎవరూ రారు.',f6t:'8 భారతీయ భాషలు',f6d:'తెలుగు, హిందీ, తమిళం, కన్నడ, మరాఠీ, మలయాళం, బెంగాలీ, ఇంగ్లీష్.',pt:'మూడు స్థాయిలు. ఒక లక్ష్యం.<br>మీ ఆర్థిక స్వేచ్ఛ.',pb1:'బేసిక్',pb2:'⭐ అత్యంత ప్రజాదరణ',pb3:'ప్రో',p11:'నెలసరి జీతం స్లిప్ PDF',p12:'ప్రతి నెల CIBIL నివేదన',p13:'ధృవీకరించబడిన ఆదాయ ప్రొఫైల్',p14:'12 నెలల తర్వాత ₹1,900 తిరిగి',p15:'WhatsApp మద్దతు',p21:'బేసిక్ లో అన్నీ',p22:'అధిక క్రెడిట్ నిబద్ధత',p23:'ప్రాధాన్యత లోన్ సరిపోలిక',p24:'ఆదాయ ధృవీకరణ పత్రం',p25:'ఎక్కువ సేవింగ్స్ తిరిగి',p31:'ప్లస్ లో అన్నీ',p32:'గరిష్ట క్రెడిట్ ప్రభావం',p33:'అంకితమైన లోన్ సలహాదారు',p34:'ఉద్యోగ లేఖ',p35:'గరిష్ట సేవింగ్స్ తిరిగి',bt1:'ప్రారంభించండి',bt2:'ప్రారంభించండి',bt3:'ప్రారంభించండి',l1:'₹25,000',l2:'₹50,000',l3:'₹1,00,000',fn:'మొదటి జీతం స్లిప్ <span>పూర్తిగా ఉచితం.</span> కార్డు అవసరం లేదు.',fth:'ఆర్థికంగా<br>కనిపించకుండా ఉండటం ఆపండి.',ftp:'భారతదేశంలో 50 కోట్ల కార్మికులు ఆర్థిక గుర్తింపుకు అర్హులు.<br>ఈరోజే ప్రారంభించండి.',ftb:'SlipScore లో ఉచితంగా చేరండి →'},
+
+'ಕನ್ನಡ':{bdg:'ಈಗ ಭಾರತದಾದ್ಯಂತ ಸದಸ್ಯರನ್ನು ಸ್ವೀಕರಿಸುತ್ತಿದ್ದೇವೆ',ht:'ನಿಮ್ಮ <span class="green">ವೇತನ ಚೀಟಿ।</span><br>ನಿಮ್ಮ ಸಾಲ ಮೌಲ್ಯ।<br>ನಿಮ್ಮ ಸಾಲ।',t1:'12 ತಿಂಗಳಲ್ಲಿ ನಿಮ್ಮ ಆರ್ಥಿಕ ಗುರುತನ್ನು ನಿರ್ಮಿಸಿ.',t2:'ನಗದು ವೇತನದಿಂದ ಬ್ಯಾಂಕ್ ಸಾಲದವರೆಗೆ — <b>ಖಾತ್ರಿ।</b>',t3:'ವೇತನ ಚೀಟಿ ಇಲ್ಲವೇ? <b>ಸಮಸ್ಯೆ ಇಲ್ಲ।</b>',ph:'ನಿಮ್ಮ WhatsApp ನಂಬರ್ ನಮೂದಿಸಿ',jb:'ಉಚಿತವಾಗಿ ಸೇರಿ →',hn:'100% ಉಚಿತ. <span>ವೇತನ ಚೀಟಿ ಅಗತ್ಯವಿಲ್ಲ.</span>',nb:'ವೇಟ್‌ಲಿಸ್ಟ್‌ಗೆ ಸೇರಿ',st1:'ಭಾರತದಲ್ಲಿ<br>ಕಾರ್ಮಿಕರು',st2:'ತಿಂಗಳಿಗೆ।<br>ಒಂದು ಊಟಕ್ಕಿಂತ ಕಡಿಮೆ.',st3:'ತಿಂಗಳಲ್ಲಿ<br>ಖಾತ್ರಿ ಸಾಲ',st4:'12 ತಿಂಗಳ ನಂತರ<br>ಹಿಂದಿರುಗಿ',sp:'₹200',sb:'₹1,900',hl:'ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ',htt:'ನಿಮ್ಮ ಆರ್ಥಿಕ ಗುರುತಿಗೆ<br>ನಾಲ್ಕು ಹೆಜ್ಜೆಗಳು',s1t:'WhatsApp ನಲ್ಲಿ ನೋಂದಾಯಿಸಿ — ಉಚಿತ',s1d:'SlipScore ಗೆ WhatsApp ಮಾಡಿ. ಹೆಸರು, ವೇತನ, ಕೆಲಸದ ಸ್ಥಳ ಹೇಳಿ. <b>3 ನಿಮಿಷ.</b>',s2t:'ತಿಂಗಳಿಗೆ ₹200 ನೀಡಿ',s2d:'UPI ಮೂಲಕ ನೀಡಿ. <b>ವೃತ್ತಿಪರ ವೇತನ ಚೀಟಿ</b> ತಯಾರಿಸಿ CIBIL ಗೆ ವರದಿ ಮಾಡುತ್ತೇವೆ.',s3t:'12 ತಿಂಗಳು — ಪ್ರೊಫೈಲ್ ಪೂರ್ಣ',s3d:'12 ಪಾವತಿಗಳ ನಂತರ <b>12 ವೇತನ ಚೀಟಿಗಳು, ಪರಿಶೀಲಿಸಿದ ಆದಾಯ ಪ್ರೊಫೈಲ್, 700+ CIBIL ಸ್ಕೋರ್।</b>',s4t:'ಸಾಲ ಪಡೆಯಿರಿ — ತಕ್ಷಣ',s4d:'ಒಂದು ಬಟನ್ ಒತ್ತಿ. NBFC ಪಾಲುದಾರರಿಗೆ ಹೋಗುತ್ತದೆ. <b>2 ಗಂಟೆಗಳಲ್ಲಿ ಹಣ.</b>',wpt:'ಎಲ್ಲವೂ ನಿಮ್ಮ<br>ಫೋನ್ ನಲ್ಲಿ ನಡೆಯುತ್ತದೆ',wpd:'ಆಪ್ ಡೌನ್ಲೋಡ್ ಬೇಡ. WhatsApp ಮಾತ್ರ ಸಾಕು.',c1:'ಯಾವುದೇ Android ಫೋನ್ ನಲ್ಲಿ',c2:'ನಿಧಾನ ಅಂತರ್ಜಾಲದಲ್ಲೂ',c3:'8 ಭಾರತೀಯ ಭಾಷೆಗಳಲ್ಲಿ',c4:'UPI ಮೂಲಕ — ಕಾರ್ಡ್ ಬೇಡ',ch1:'ನಮಸ್ಕಾರ! ನಾನು ಚೆನ್ನೈನಲ್ಲಿ ಸಲೂನ್ ನಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತೇನೆ. ವೇತನ ಚೀಟಿ ಸಿಗುತ್ತದೆಯೇ?',ch2:'ನಮಸ್ಕಾರ! ಮೊದಲ ವೇತನ ಚೀಟಿ ಉಚಿತ ✅<br>ಮಾಸಿಕ ವೇತನ ಎಷ್ಟು?',ch3:'₹18,000/ತಿಂಗಳು',ch4:'✅ ವೇತನ ಚೀಟಿ ತಯಾರು!<br>📄 Ravi_Nov2025.pdf<br>12 ತಿಂಗಳ ಯೋಜನೆಗೆ ಸೇರಿ.',ch5:'ಹೌದು! ಹೇಗೆ ಪಾವತಿಸಬೇಕು? 🙏',ft:'ಒಂದೇ ಯೋಜನೆಯಲ್ಲಿ ಎಲ್ಲವೂ',f1t:'ಮಾಸಿಕ ವೇತನ ಚೀಟಿ',f1d:'ಪ್ರತಿ ತಿಂಗಳು PDF. ಬ್ಯಾಂಕ್ ಸಾಲ, ಬಾಡಿಗೆ, ವೀಸಾಕ್ಕೆ.',f2t:'CIBIL ಸ್ಕೋರ್ ನಿರ್ಮಾಣ',f2d:'ಪ್ರತಿ ಪಾವತಿ CIBIL ಗೆ ವರದಿ. 12 ತಿಂಗಳಲ್ಲಿ ಶೂನ್ಯದಿಂದ 700+.',f3t:'₹1,900 ಹಿಂದಿರುಗಿ',f3d:'12 ತಿಂಗಳ ನಂತರ ಉಳಿತಾಯ ಹಿಂದಿರುಗಿ.',f4t:'ತಕ್ಷಣ ಸಾಲ',f4d:'NBFC ಗಳೊಂದಿಗೆ ಮುಂಚಿತ ಒಪ್ಪಂದ. 2 ಗಂಟೆಗಳಲ್ಲಿ ಸಾಲ.',f5t:'100% ಖಾಸಗಿ',f5d:'ಡಿಜಿಟಲ್ ಮರುಪಾವತಿ. ಯಾರೂ ಬರುವುದಿಲ್ಲ.',f6t:'8 ಭಾರತೀಯ ಭಾಷೆಗಳು',f6d:'ಕನ್ನಡ, ಹಿಂದಿ, ತಮಿಳು, ತೆಲುಗು, ಮರಾಠಿ, ಮಲಯಾಳಂ, ಬೆಂಗಾಲಿ, ಇಂಗ್ಲಿಷ್.',pt:'ಮೂರು ಹಂತಗಳು. ಒಂದು ಗುರಿ.<br>ನಿಮ್ಮ ಆರ್ಥಿಕ ಸ್ವಾತಂತ್ರ್ಯ.',pb1:'ಮೂಲ',pb2:'⭐ ಅತ್ಯಂತ ಜನಪ್ರಿಯ',pb3:'ಪ್ರೊ',p11:'ಮಾಸಿಕ ವೇತನ ಚೀಟಿ PDF',p12:'ಪ್ರತಿ ತಿಂಗಳು CIBIL ವರದಿ',p13:'ಪರಿಶೀಲಿಸಿದ ಆದಾಯ ಪ್ರೊಫೈಲ್',p14:'12 ತಿಂಗಳ ನಂತರ ₹1,900 ಹಿಂದಿರುಗಿ',p15:'WhatsApp ಬೆಂಬಲ',p21:'ಮೂಲದಲ್ಲಿ ಎಲ್ಲವೂ',p22:'ಹೆಚ್ಚಿನ ಕ್ರೆಡಿಟ್ ಬದ್ಧತೆ',p23:'ಆದ್ಯತಾ ಸಾಲ ಹೊಂದಾಣಿಕೆ',p24:'ಆದಾಯ ಪ್ರಮಾಣಪತ್ರ',p25:'ಹೆಚ್ಚಿನ ಉಳಿತಾಯ ಹಿಂದಿರುಗಿ',p31:'ಪ್ಲಸ್ ನಲ್ಲಿ ಎಲ್ಲವೂ',p32:'ಗರಿಷ್ಠ ಕ್ರೆಡಿಟ್ ಪ್ರಭಾವ',p33:'ಮೀಸಲು ಸಾಲ ಸಲಹೆಗಾರ',p34:'ಉದ್ಯೋಗ ಪತ್ರ',p35:'ಗರಿಷ್ಠ ಉಳಿತಾಯ ಹಿಂದಿರುಗಿ',bt1:'ಪ್ರಾರಂಭಿಸಿ',bt2:'ಪ್ರಾರಂಭಿಸಿ',bt3:'ಪ್ರಾರಂಭಿಸಿ',l1:'₹25,000',l2:'₹50,000',l3:'₹1,00,000',fn:'ಮೊದಲ ವೇತನ ಚೀಟಿ <span>ಸಂಪೂರ್ಣ ಉಚಿತ.</span> ಕಾರ್ಡ್ ಬೇಡ.',fth:'ಆರ್ಥಿಕವಾಗಿ<br>ಅಗೋಚರವಾಗಿರುವುದನ್ನು ನಿಲ್ಲಿಸಿ.',ftp:'ಭಾರತದಲ್ಲಿ 50 ಕೋಟಿ ಕಾರ್ಮಿಕರು ಆರ್ಥಿಕ ಗುರುತಿಗೆ ಅರ್ಹರು.<br>ಇಂದೇ ಪ್ರಾರಂಭಿಸಿ.',ftb:'SlipScore ನಲ್ಲಿ ಉಚಿತವಾಗಿ ಸೇರಿ →'},
+
+'मराठी':{bdg:'आता भारतभर सदस्य स्वीकारत आहोत',ht:'तुमची <span class="green">पगारपावती।</span><br>तुमचे क्रेडिट।<br>तुमचे कर्ज।',t1:'12 महिन्यांत तुमची आर्थिक ओळख निर्माण करा.',t2:'रोख पगारापासून बँक कर्जापर्यंत — <b>हमी।</b>',t3:'पगारपावती नाही? <b>काळजी नाही।</b>',ph:'तुमचा WhatsApp नंबर प्रविष्ट करा',jb:'मोफत सामील व्हा →',hn:'100% मोफत. <span>पगारपावती आवश्यक नाही.</span>',nb:'वेटलिस्टमध्ये सामील व्हा',st1:'भारतात<br>कामगार',st2:'दर महिना।<br>एका जेवणापेक्षा कमी.',st3:'महिन्यांत<br>हमी कर्ज',st4:'12 महिन्यांनंतर<br>परत मिळेल',sp:'₹200',sb:'₹1,900',hl:'हे कसे काम करते',htt:'तुमच्या आर्थिक ओळखीसाठी<br>चार पायऱ्या',s1t:'WhatsApp वर नोंदणी करा — मोफत',s1d:'SlipScore ला WhatsApp करा. नाव, पगार, कामाचे ठिकाण सांगा. <b>3 मिनिटे.</b>',s2t:'दर महिना ₹200 द्या',s2d:'UPI द्वारे द्या. <b>व्यावसायिक पगारपावती</b> तयार करतो आणि CIBIL ला कळवतो.',s3t:'12 महिने — प्रोफाइल पूर्ण',s3d:'12 पेमेंटनंतर <b>12 पगारपाव्त्या, सत्यापित उत्पन्न प्रोफाइल आणि 700+ CIBIL स्कोर।</b>',s4t:'कर्ज मिळवा — तात्काळ',s4d:'एक बटण दाबा. NBFC भागीदारांकडे जाते. <b>2 तासांत पैसे.</b>',wpt:'सर्व काही तुमच्या<br>फोनवर होते',wpd:'अॅप डाउनलोड नाही. फक्त WhatsApp.',c1:'कोणत्याही Android फोनवर',c2:'धीमे इंटरनेटवरही',c3:'8 भारतीय भाषांमध्ये',c4:'UPI द्वारे — कार्ड नको',ch1:'नमस्कार! मी चेन्नईत सलूनमध्ये काम करतो. पगारपावती मिळेल का?',ch2:'नमस्कार! पहिली पगारपावती मोफत ✅<br>मासिक पगार किती?',ch3:'₹18,000/महिना',ch4:'✅ पगारपावती तयार!<br>📄 Ravi_Nov2025.pdf<br>12 महिन्यांच्या योजनेत सामील व्हा.',ch5:'हो! कसे पेमेंट करायचे? 🙏',ft:'एकाच योजनेत सर्व काही',f1t:'मासिक पगारपावती',f1d:'दर महिना PDF. बँक कर्ज, भाडे, व्हिसासाठी.',f2t:'CIBIL स्कोर निर्माण',f2d:'प्रत्येक पेमेंट CIBIL ला. 12 महिन्यांत शून्यातून 700+.',f3t:'₹1,900 परत',f3d:'12 महिन्यांनंतर बचत परत, छोटी फी वजा.',f4t:'तात्काळ कर्ज',f4d:'NBFCs सोबत पूर्व-करार. 2 तासांत कर्ज.',f5t:'100% खाजगी',f5d:'डिजिटल परतफेड. कोणी येणार नाही.',f6t:'8 भारतीय भाषा',f6d:'मराठी, हिंदी, तमिळ, तेलुगू, कन्नड, मल्याळम, बंगाली, इंग्रजी.',pt:'तीन स्तर. एक ध्येय.<br>तुमचे आर्थिक स्वातंत्र्य.',pb1:'बेसिक',pb2:'⭐ सर्वात लोकप्रिय',pb3:'प्रो',p11:'मासिक पगारपावती PDF',p12:'दर महिना CIBIL अहवाल',p13:'सत्यापित उत्पन्न प्रोफाइल',p14:'12 महिन्यांनंतर ₹1,900 परत',p15:'WhatsApp समर्थन',p21:'बेसिकमधील सर्व',p22:'अधिक क्रेडिट वचनबद्धता',p23:'प्राधान्य कर्ज जुळणी',p24:'उत्पन्न प्रमाणपत्र',p25:'अधिक बचत परत',p31:'प्लसमधील सर्व',p32:'जास्तीत जास्त क्रेडिट प्रभाव',p33:'समर्पित कर्ज सल्लागार',p34:'रोजगार पत्र',p35:'जास्तीत जास्त बचत परत',bt1:'सुरू करा',bt2:'सुरू करा',bt3:'सुरू करा',l1:'₹25,000',l2:'₹50,000',l3:'₹1,00,000',fn:'पहिली पगारपावती <span>संपूर्णपणे मोफत.</span> कार्ड नको.',fth:'आर्थिकदृष्ट्या<br>अदृश्य राहणे थांबवा.',ftp:'भारतात 50 कोटी कामगार आर्थिक ओळखीसाठी पात्र.<br>आजच सुरू करा.',ftb:'SlipScore मध्ये मोफत सामील व्हा →'},
+
+'മലയാളം':{bdg:'ഇപ്പോൾ ഇന്ത്യ മുഴുവൻ അംഗങ്ങളെ സ്വീകരിക്കുന്നു',ht:'നിങ്ങളുടെ <span class="green">ശമ്പള സ്ലിപ്പ്।</span><br>നിങ്ങളുടെ ക്രെഡിറ്റ്।<br>നിങ്ങളുടെ ലോൺ।',t1:'12 മാസങ്ങളിൽ നിങ്ങളുടെ സാമ്പത്തിക ഐഡൻ്റിറ്റി നിർമ്മിക്കുക.',t2:'പണ ശമ്പളത്തിൽ നിന്ന് ബാങ്ക് ലോണിലേക്ക് — <b>ഗ്യാരന്റി।</b>',t3:'ശമ്പള സ്ലിപ്പ് ഇല്ലേ? <b>പ്രശ്നമില്ല।</b>',ph:'നിങ്ങളുടെ WhatsApp നമ്പർ നൽകുക',jb:'സൗജന്യമായി ചേരൂ →',hn:'100% സൗജന്യം. <span>ശമ്പള സ്ലിപ്പ് ആവശ്യമില്ല.</span>',nb:'വെയ്റ്റ്ലിസ്റ്റിൽ ചേരൂ',st1:'ഇന്ത്യയിൽ<br>തൊഴിലാളികൾ',st2:'പ്രതി മാസം।<br>ഒരു ഭക്ഷണത്തേക്കാൾ കുറവ്.',st3:'മാസങ്ങളിൽ<br>ഗ്യാരന്റി ലോൺ',st4:'12 മാസത്തിനു ശേഷം<br>തിരിച്ചു കിട്ടും',sp:'₹200',sb:'₹1,900',hl:'എങ്ങനെ പ്രവർത്തിക്കുന്നു',htt:'നിങ്ങളുടെ സാമ്പത്തിക ഐഡൻ്റിറ്റിക്ക്<br>നാല് ഘട്ടങ്ങൾ',s1t:'WhatsApp-ൽ രജിസ്റ്റർ ചെയ്യൂ — സൗജന്യം',s1d:'SlipScore-ന് WhatsApp ചെയ്യൂ. പേര്, ശമ്പളം, ജോലി സ്ഥലം പറയൂ. <b>3 മിനിറ്റ്.</b>',s2t:'മാസം ₹200 നൽകൂ',s2d:'UPI വഴി നൽകൂ. <b>പ്രൊഫഷണൽ ശമ്പള സ്ലിപ്പ്</b> ഉണ്ടാക്കി CIBIL-ന് റിപ്പോർട്ട് ചെയ്യുന്നു.',s3t:'12 മാസം — പ്രൊഫൈൽ പൂർത്തി',s3d:'12 പേമെന്റുകൾക്ക് ശേഷം <b>12 ശമ്പള സ്ലിപ്പുകൾ, 700+ CIBIL സ്കോർ।</b>',s4t:'ലോൺ നേടൂ — ഉടനടി',s4d:'ഒരു ബട്ടൺ അമർത്തൂ. NBFC പങ്കാളികൾക്ക് പോകുന്നു. <b>2 മണിക്കൂറിൽ പണം.</b>',wpt:'എല്ലാം നിങ്ങളുടെ<br>ഫോണിൽ നടക്കുന്നു',wpd:'ആപ്പ് ഡൗൺലോഡ് ആവശ്യമില്ല. WhatsApp മാത്രം മതി.',c1:'ഏത് Android ഫോണിലും',c2:'സ്ലോ ഇൻ്റർനെറ്റിലും',c3:'8 ഇന്ത്യൻ ഭാഷകളിൽ',c4:'UPI വഴി — കാർഡ് ആവശ്യമില്ല',ch1:'നമസ്കാരം! ഞാൻ ചെന്നൈയിൽ ഒരു സലൂണിൽ ജോലി ചെയ്യുന്നു. ശമ്പള സ്ലിപ്പ് കിട്ടുമോ?',ch2:'നമസ്കാരം! ആദ്യ ശമ്പള സ്ലിപ്പ് സൗജന്യം ✅<br>മാസ ശമ്പളം എത്ര?',ch3:'₹18,000/മാസം',ch4:'✅ ശമ്പള സ്ലിപ്പ് തയ്യാർ!<br>📄 Ravi_Nov2025.pdf<br>12 മാസ പ്ലാനിൽ ചേരൂ.',ch5:'അതെ! എങ്ങനെ പേ ചെയ്യണം? 🙏',ft:'ഒരു പ്ലാനിൽ എല്ലാം',f1t:'മാസ ശമ്പള സ്ലിപ്പ്',f1d:'ഓരോ മാസവും PDF. ബാങ്ക് ലോൺ, വാടക, വിസക്ക്.',f2t:'CIBIL സ്കോർ നിർമ്മാണം',f2d:'ഓരോ പേമെന്റും CIBIL-ന്. 12 മാസത്തിൽ 700+.',f3t:'₹1,900 തിരികെ',f3d:'12 മാസത്തിനു ശേഷം സേവിംഗ്സ് തിരികെ.',f4t:'ഉടനടി ലോൺ',f4d:'NBFC-കളുമായി മുൻകൂർ കരാർ. 2 മണിക്കൂറിൽ ലോൺ.',f5t:'100% സ്വകാര്യം',f5d:'ഡിജിറ്റൽ തിരിച്ചടവ്. ആരും വരില്ല.',f6t:'8 ഇന്ത്യൻ ഭാഷകൾ',f6d:'മലയാളം, ഹിന്ദി, തമിഴ്, തെലുഗു, കന്നഡ, മറാഠി, ബംഗാളി, ഇംഗ്ലീഷ്.',pt:'മൂന്ന് ടയർ. ഒരു ലക്ഷ്യം.<br>നിങ്ങളുടെ സാമ്പത്തിക സ്വാതന്ത്ര്യം.',pb1:'ബേസിക്',pb2:'⭐ ഏറ്റവും ജനപ്രിയം',pb3:'പ്രോ',p11:'മാസ ശമ്പള സ്ലിപ്പ് PDF',p12:'ഓരോ മാസവും CIBIL റിപ്പോർട്ടിംഗ്',p13:'സ്ഥിരീകരിച്ച ആദായ പ്രൊഫൈൽ',p14:'12 മാസത്തിനു ശേഷം ₹1,900 തിരികെ',p15:'WhatsApp സപ്പോർട്ട്',p21:'ബേസിക്കിലുള്ള എല്ലാം',p22:'ഉയർന്ന ക്രെഡിറ്റ് പ്രതിബദ്ധത',p23:'മുൻഗണന ലോൺ മാച്ചിംഗ്',p24:'ആദായ സർട്ടിഫിക്കറ്റ്',p25:'കൂടുതൽ സേവിംഗ്സ് തിരികെ',p31:'പ്ലസ്സിലുള്ള എല്ലാം',p32:'പരമാവധി ക്രെഡിറ്റ് ഇംപാക്ട്',p33:'ഡെഡിക്കേറ്റഡ് ലോൺ അഡ്വൈസർ',p34:'എംപ്ലോയ്മെന്റ് ലെറ്റർ',p35:'പരമാവധി സേവിംഗ്സ് തിരികെ',bt1:'ആരംഭിക്കൂ',bt2:'ആരംഭിക്കൂ',bt3:'ആരംഭിക്കൂ',l1:'₹25,000',l2:'₹50,000',l3:'₹1,00,000',fn:'ആദ്യ ശമ്പള സ്ലിപ്പ് <span>പൂർണ്ണമായും സൗജന്യം.</span> കാർഡ് ആവശ്യമില്ല.',fth:'സാമ്പത്തികമായി<br>അദൃശ്യനാകുന്നത് നിർത്തൂ.',ftp:'ഇന്ത്യയിൽ 50 കോടി തൊഴിലാളികൾ ഐഡൻ്റിറ്റിക്ക് അർഹരാണ്.<br>ഇന്ന് ആരംഭിക്കൂ.',ftb:'SlipScore-ൽ സൗജന്യമായി ചേരൂ →'},
+
+'বাংলা':{bdg:'এখন ভারত জুড়ে সদস্য নেওয়া হচ্ছে',ht:'আপনার <span class="green">বেতন স্লিপ।</span><br>আপনার ক্রেডিট।<br>আপনার লোন।',t1:'১২ মাসে আপনার আর্থিক পরিচয় গড়ে তুলুন।',t2:'নগদ বেতন থেকে ব্যাংক লোন পর্যন্ত — <b>গ্যারান্টি।</b>',t3:'বেতন স্লিপ নেই? <b>সমস্যা নেই।</b>',ph:'আপনার WhatsApp নম্বর দিন',jb:'বিনামূল্যে যোগ দিন →',hn:'১০০% বিনামূল্যে। <span>বেতন স্লিপ লাগবে না।</span>',nb:'ওয়েটলিস্টে যোগ দিন',st1:'ভারতে<br>শ্রমিক',st2:'প্রতি মাসে।<br>এক বেলা খাবারের চেয়ে কম।',st3:'মাসে<br>গ্যারান্টি লোন',st4:'১২ মাস পরে<br>ফিরে পাবেন',sp:'₹200',sb:'₹1,900',hl:'কীভাবে কাজ করে',htt:'আপনার আর্থিক পরিচয়ের<br>চারটি ধাপ',s1t:'WhatsApp এ নিবন্ধন — বিনামূল্যে',s1d:'SlipScore কে WhatsApp করুন। নাম, বেতন, কাজের জায়গা বলুন। <b>৩ মিনিট।</b>',s2t:'মাসে ₹200 দিন',s2d:'UPI তে দিন। <b>পেশাদার বেতন স্লিপ</b> তৈরি করি এবং CIBIL কে জানাই।',s3t:'১২ মাস — প্রোফাইল সম্পূর্ণ',s3d:'১২টি পেমেন্টের পরে <b>১২টি বেতন স্লিপ, ৭০০+ CIBIL স্কোর।</b>',s4t:'লোন নিন — তাৎক্ষণিক',s4d:'একটি বাটন চাপুন। NBFC অংশীদারদের কাছে যায়। <b>২ ঘণ্টায় টাকা।</b>',wpt:'সব কিছু আপনার<br>ফোনে হয়',wpd:'কোনো অ্যাপ নেই। শুধু WhatsApp।',c1:'যেকোনো Android ফোনে',c2:'ধীর ইন্টারনেটেও',c3:'৮টি ভারতীয় ভাষায়',c4:'UPI তে — কার্ড লাগবে না',ch1:'নমস্কার! আমি চেন্নাইতে সেলুনে কাজ করি। বেতন স্লিপ পাওয়া যাবে?',ch2:'নমস্কার! প্রথম বেতন স্লিপ বিনামূল্যে ✅<br>মাসিক বেতন কত?',ch3:'₹১৮,০০০/মাস',ch4:'✅ বেতন স্লিপ তৈরি!<br>📄 Ravi_Nov2025.pdf<br>১২ মাসের প্ল্যানে যোগ দিন।',ch5:'হ্যাঁ! কীভাবে পেমেন্ট করব? 🙏',ft:'একটি প্ল্যানে সব কিছু',f1t:'মাসিক বেতন স্লিপ',f1d:'প্রতি মাসে PDF। ব্যাংক লোন, ভাড়া, ভিসার জন্য।',f2t:'CIBIL স্কোর নির্মাণ',f2d:'প্রতিটি পেমেন্ট CIBIL কে। ১২ মাসে শূন্য থেকে ৭০০+।',f3t:'₹১,৯০০ ফেরত',f3d:'১২ মাস পরে সঞ্চয় ফেরত।',f4t:'তাৎক্ষণিক লোন',f4d:'NBFC দের সাথে পূর্ব-চুক্তি। ২ ঘণ্টায় লোন।',f5t:'১০০% ব্যক্তিগত',f5d:'ডিজিটাল পরিশোধ। কেউ আসবে না।',f6t:'৮টি ভারতীয় ভাষা',f6d:'বাংলা, হিন্দি, তামিল, তেলুগু, কন্নড়, মারাঠি, মালায়ালাম, ইংরেজি।',pt:'তিনটি স্তর। একটি লক্ষ্য।<br>আপনার আর্থিক স্বাধীনতা।',pb1:'বেসিক',pb2:'⭐ সবচেয়ে জনপ্রিয়',pb3:'প্রো',p11:'মাসিক বেতন স্লিপ PDF',p12:'প্রতি মাসে CIBIL রিপোর্টিং',p13:'যাচাইকৃত আয় প্রোফাইল',p14:'১২ মাস পরে ₹১,৯০০ ফেরত',p15:'WhatsApp সহায়তা',p21:'বেসিকের সব কিছু',p22:'উচ্চ ক্রেডিট প্রতিশ্রুতি',p23:'অগ্রাধিকার লোন ম্যাচিং',p24:'আয় সার্টিফিকেট',p25:'বেশি সঞ্চয় ফেরত',p31:'প্লাসের সব কিছু',p32:'সর্বোচ্চ ক্রেডিট প্রভাব',p33:'নিবেদিত লোন উপদেষ্টা',p34:'কর্মসংস্থান পত্র',p35:'সর্বোচ্চ সঞ্চয় ফেরত',bt1:'শুরু করুন',bt2:'শুরু করুন',bt3:'শুরু করুন',l1:'₹২৫,০০০',l2:'₹৫০,০০০',l3:'₹১,০০,০০০',fn:'প্রথম বেতন স্লিপ <span>সম্পূর্ণ বিনামূল্যে।</span> কার্ড লাগবে না.',fth:'আর্থিকভাবে<br>অদৃশ্য থাকা বন্ধ করুন।',ftp:'ভারতে ৫০ কোটি শ্রমিক আর্থিক পরিচয়ের যোগ্য।<br>আজই শুরু করুন।',ftb:'SlipScore এ বিনামূল্যে যোগ দিন →'}
+};
+
+function go(){document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})}
+
+function apply(lang){
+  const d=D[lang]||D['English'];
+  const s=(id,v)=>{const e=document.getElementById(id);if(e)e.innerHTML=v};
+  const t=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  s('bdg',d.bdg);s('htitle',d.ht);s('tg1',d.t1);s('tg2',d.t2);s('tg3',d.t3);
+  document.getElementById('ph').placeholder=d.ph;
+  t('jbtn',d.jb);s('hn',d.hn);t('navbtn',d.nb);
+  s('st1',d.st1);s('st2',d.st2);s('st3',d.st3);s('st4',d.st4);
+  t('stprice',d.sp);t('stback',d.sb);
+  t('hlbl',d.hl);s('htit',d.htt);
+  t('s1t',d.s1t);s('s1d',d.s1d);t('s2t',d.s2t);s('s2d',d.s2d);
+  t('s3t',d.s3t);s('s3d',d.s3d);t('s4t',d.s4t);s('s4d',d.s4d);
+  s('wpt',d.wpt);t('wpd',d.wpd);
+  t('c1',d.c1);t('c2',d.c2);t('c3',d.c3);t('c4',d.c4);
+  t('ch1',d.ch1);s('ch2',d.ch2);t('ch3',d.ch3);s('ch4',d.ch4);t('ch5',d.ch5);
+  t('ftit',d.ft);
+  t('f1t',d.f1t);t('f1d',d.f1d);t('f2t',d.f2t);t('f2d',d.f2d);
+  t('f3t',d.f3t);t('f3d',d.f3d);t('f4t',d.f4t);t('f4d',d.f4d);
+  t('f5t',d.f5t);t('f5d',d.f5d);t('f6t',d.f6t);t('f6d',d.f6d);
+  s('ptit',d.pt);
+  t('pb1',d.pb1);s('pb2',d.pb2);t('pb3',d.pb3);
+  t('pf11',d.p11);t('pf12',d.p12);t('pf13',d.p13);t('pf14',d.p14);t('pf15',d.p15);
+  t('pf21',d.p21);t('pf22',d.p22);t('pf23',d.p23);t('pf24',d.p24);t('pf25',d.p25);
+  t('pf31',d.p31);t('pf32',d.p32);t('pf33',d.p33);t('pf34',d.p34);t('pf35',d.p35);
+  t('pb1btn',d.bt1);t('pb2btn',d.bt2);t('pb3btn',d.bt3);
+  t('pl1',d.l1);t('pl2',d.l2);t('pl3',d.l3);
+  s('fnote',d.fn);s('fth',d.fth);s('ftp',d.ftp);t('ftbtn',d.ftb);
+}
+
+function join(){
+  const p=document.getElementById('ph');
+  if(p.value.replace(/\D/g,'').length>=10){
+    p.parentElement.style.display='none';
+    document.getElementById('ok').style.display='block';
+  } else {
+    p.style.outline='2px solid #e94560';
+    setTimeout(()=>p.style.outline='none',2000);
+  }
+}
+
+document.querySelectorAll('.lp').forEach(pill=>{
+  pill.addEventListener('click',function(){
+    document.querySelectorAll('.lp').forEach(p=>p.classList.remove('on'));
+    this.classList.add('on');
+    apply(this.innerText.trim());
+  });
+});
+</script>
+
+</body>
+</html>

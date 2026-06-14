@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SlipScore — Real payslips. Real credit. For every worker in India.</title>
+<meta name="description" content="SlipScore turns your income into verified payslips and builds your CIBIL credit score. Made for India's gig, daily-wage and informal workers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A1322;
+  --ink-2:#0F1B30;
+  --surface:#13223C;
+  --line:rgba(143,163,194,.14);
+  --paper:#F7F4EC;
+  --paper-line:#D9D2C0;
+  --green:#2BD98F;
+  --green-dim:rgba(43,217,143,.12);
+  --gold:#E8B44C;
+  --text:#E9EEF7;
+  --muted:#8FA3C2;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --display:'Bricolage Grotesque',sans-serif;
+  --body:'Manrope',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono)}
+::selection{background:var(--green);color:var(--ink)}
+nav{position:sticky;top:0;z-index:50;background:rgba(10,19,34,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--green),#15A56A);display:grid;place-items:center;color:var(--ink);font-family:var(--mono);font-size:.85rem;font-weight:600}
+.logo .in{color:var(--green)}
+.nav-links{display:flex;gap:32px;font-size:.92rem;color:var(--muted);font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{display:flex;align-items:center;gap:14px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.95rem;border-radius:10px;padding:12px 22px;transition:transform .15s ease,box-shadow .15s ease;cursor:pointer;border:none;font-family:var(--body)}
+.btn-green{background:var(--green);color:#062316;box-shadow:0 6px 24px rgba(43,217,143,.25)}
+.btn-green:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(43,217,143,.35)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--muted)}
+.btn-sm{padding:9px 18px;font-size:.88rem}
+.hero{position:relative;overflow:hidden;padding:84px 0 96px}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 480px at 78% 12%,rgba(43,217,143,.10),transparent 60%),radial-gradient(700px 420px at 8% 90%,rgba(232,180,76,.06),transparent 60%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;color:var(--green);background:var(--green-dim);border:1px solid rgba(43,217,143,.25);border-radius:999px;padding:6px 14px;margin-bottom:22px}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,4.6vw,3.6rem);line-height:1.06;letter-spacing:-.025em;margin-bottom:20px}
+h1 .rot{color:var(--green);display:inline-block;min-width:1ch}
+.hero-sub{color:var(--muted);font-size:1.13rem;max-width:34rem;margin-bottom:30px}
+.hero-sub strong{color:var(--text);font-weight:600}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:34px}
+.hero-proof{display:flex;gap:28px;flex-wrap:wrap}
+.proof .n{font-family:var(--mono);font-weight:600;font-size:1.25rem;color:var(--text)}
+.proof .l{font-size:.82rem;color:var(--muted)}
+.slip-zone{position:relative;display:flex;justify-content:center}
+.slip{width:min(420px,100%);background:var(--paper);color:#22293A;border-radius:6px;box-shadow:0 30px 80px rgba(0,0,0,.5),0 2px 0 #fff inset;font-family:var(--mono);font-size:.8rem;position:relative;transform:rotate(-1.2deg)}
+.slip::before,.slip::after{content:"";position:absolute;left:0;right:0;height:10px;background:radial-gradient(circle at 8px 50%,var(--ink) 4px,transparent 4.5px);background-size:20px 10px;background-position:2px 0}
+.slip::before{top:-1px;transform:translateY(-40%)}
+.slip::after{bottom:-1px;transform:translateY(40%) rotate(180deg)}
+.slip-head{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 24px 14px;border-bottom:1.5px dashed var(--paper-line)}
+.slip-head .co{font-weight:600;font-size:.92rem;letter-spacing:.02em}
+.slip-head .co small{display:block;font-weight:400;color:#6E7587;font-size:.7rem;margin-top:3px}
+.slip-no{text-align:right;color:#6E7587;font-size:.7rem;line-height:1.7}
+.slip-body{padding:16px 24px}
+.slip-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dotted var(--paper-line);opacity:0;transform:translateY(6px);animation:rowIn .5s ease forwards}
+.slip-row:nth-child(1){animation-delay:.3s}
+.slip-row:nth-child(2){animation-delay:.55s}
+.slip-row:nth-child(3){animation-delay:.8s}
+.slip-row:nth-child(4){animation-delay:1.05s}
+.slip-row:nth-child(5){animation-delay:1.3s}
+@keyframes rowIn{to{opacity:1;transform:none}}
+.slip-row .k{color:#6E7587}
+.slip-total{display:flex;justify-content:space-between;padding:14px 24px;background:#EEEADD;font-weight:600;font-size:.92rem}
+.slip-foot{display:flex;justify-content:space-between;align-items:center;padding:16px 24px 22px}
+.slip-foot .upi{color:#6E7587;font-size:.68rem;line-height:1.7}
+.stamp{border:2.5px solid #1B9E63;color:#1B9E63;border-radius:6px;padding:5px 12px;font-weight:600;font-size:.78rem;letter-spacing:.14em;transform:rotate(-8deg);opacity:0;animation:stampIn .4s cubic-bezier(.2,2.2,.4,1) 1.7s forwards}
+@keyframes stampIn{from{opacity:0;transform:rotate(-8deg) scale(2.2)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+.score-chip{position:absolute;right:-8px;bottom:-26px;background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 18px 50px rgba(0,0,0,.55);transform:rotate(1.5deg)}
+.gauge{width:54px;height:54px}
+.gauge circle{fill:none;stroke-width:5;stroke-linecap:round}
+.gauge .bg{stroke:rgba(143,163,194,.18)}
+.gauge .fg{stroke:var(--green);stroke-dasharray:138;stroke-dashoffset:138;animation:gaugeIn 1.6s ease 1.9s forwards}
+@keyframes gaugeIn{to{stroke-dashoffset:34}}
+.score-chip .v{font-family:var(--mono);font-weight:600;font-size:1.3rem;line-height:1.1}
+.score-chip .t{font-size:.72rem;color:var(--muted)}
+.score-chip .up{color:var(--green);font-family:var(--mono);font-size:.72rem}
+.langs{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-2);overflow:hidden;padding:16px 0}
+.lang-track{display:flex;gap:48px;white-space:nowrap;animation:scroll 30s linear infinite;width:max-content}
+@keyframes scroll{to{transform:translateX(-50%)}}
+.lang-track span{font-size:.95rem;color:var(--muted)}
+.lang-track b{color:var(--text);font-weight:600;margin-right:8px}
+section{padding:96px 0}
+.sec-eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.14em;color:var(--green);text-transform:uppercase;margin-bottom:14px}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,3.2vw,2.5rem);letter-spacing:-.02em;line-height:1.15;margin-bottom:14px}
+.sec-sub{color:var(--muted);max-width:38rem;font-size:1.05rem}
+.problem{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.prob-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.prob-card{background:var(--ink);border:1px solid var(--line);border-radius:16px;padding:28px}
+.prob-card .big{font-family:var(--mono);font-size:2rem;font-weight:600;color:var(--gold);margin-bottom:8px}
+.prob-card p{color:var(--muted);font-size:.95rem}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.step{border:1px solid var(--line);border-radius:16px;padding:30px;background:linear-gradient(180deg,var(--surface),var(--ink-2));position:relative}
+.step .num{font-family:var(--mono);color:var(--green);font-size:.8rem;letter-spacing:.1em;margin-bottom:16px}
+.step h3{font-family:var(--display);font-weight:700;font-size:1.2rem;margin-bottom:10px}
+.step p{color:var(--muted);font-size:.95rem}
+.step .icon{width:44px;height:44px;border-radius:12px;background:var(--green-dim);display:grid;place-items:center;margin-bottom:18px;font-size:1.2rem}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.plan{border:1px solid var(--line);border-radius:18px;padding:32px;background:var(--ink-2);display:flex;flex-direction:column;transition:transform .2s ease,border-color .2s ease}
+.plan:hover{transform:translateY(-4px)}
+.plan.featured{border-color:rgba(43,217,143,.5);background:linear-gradient(180deg,rgba(43,217,143,.08),var(--ink-2));position:relative}
+.plan .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:#062316;font-size:.72rem;font-weight:700;letter-spacing:.06em;border-radius:999px;padding:4px 14px}
+.plan .name{font-family:var(--mono);font-size:.8rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.plan .price{font-family:var(--mono);font-weight:600;font-size:2.4rem;letter-spacing:-.02em}
+.plan .per{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+.plan ul{list-style:none;margin-bottom:28px;flex:1}
+.plan li{padding:8px 0;color:var(--muted);font-size:.93rem;display:flex;gap:10px;align-items:flex-start}
+.plan li::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0}
+.plan .btn{justify-content:center}
+.nbfc{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.nbfc-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.nbfc-points{list-style:none;margin-top:26px}
+.nbfc-points li{display:flex;gap:14px;padding:12px 0;color:var(--muted)}
+.nbfc-points .tick{width:26px;height:26px;border-radius:8px;background:var(--green-dim);color:var(--green);display:grid;place-items:center;flex-shrink:0;font-size:.8rem;font-weight:700}
+.nbfc-card{background:var(--ink);border:1px solid var(--line);border-radius:18px;padding:32px;font-family:var(--mono)}
+.nbfc-card .row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dotted var(--line);font-size:.88rem}
+.nbfc-card .row:last-child{border:none}
+.nbfc-card .k{color:var(--muted)}
+.nbfc-card .v{color:var(--text);font-weight:500}
+.nbfc-card .v.g{color:var(--green)}
+.sec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.sec-card{border:1px solid var(--line);border-radius:16px;padding:28px;background:var(--ink-2)}
+.sec-card h3{font-family:var(--display);font-size:1.05rem;font-weight:700;margin:14px 0 8px}
+.sec-card p{color:var(--muted);font-size:.92rem}
+.sec-card .ic{width:40px;height:40px;border-radius:10px;background:var(--green-dim);display:grid;place-items:center}
+.final{text-align:center;padding:110px 0;position:relative;overflow:hidden}
+.final::before{content:"";position:absolute;inset:0;background:radial-gradient(640px 360px at 50% 100%,rgba(43,217,143,.12),transparent 65%);pointer-events:none}
+.final h2{font-size:clamp(2rem,4vw,3rem)}
+.final .sec-sub{margin:0 auto 36px}
+footer{border-top:1px solid var(--line);padding:48px 0 36px;background:var(--ink-2)}
+.foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:36px}
+.foot-grid .col h4{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-family:var(--mono)}
+.foot-grid .col a{display:block;color:var(--muted);font-size:.92rem;padding:5px 0}
+.foot-grid .col a:hover{color:var(--text)}
+.foot-base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);padding-top:24px}
+@media (max-width:920px){
+  .hero-grid,.nbfc-grid{grid-template-columns:1fr}
+  .prob-grid,.steps,.plans,.sec-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .hero{padding:56px 0 80px}
+  section{padding:72px 0}
+  .slip-zone{margin-top:12px}
+  .score-chip{right:4px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .slip-row{opacity:1;transform:none}
+  .stamp{opacity:1}
+  .gauge .fg{stroke-dashoffset:34}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap nav-in">
+    <a href="#" class="logo"><span class="mark">₹</span>SlipScore<span class="in">.in</span></a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#nbfc">For lenders</a>
+      <a href="#security">Security</a>
+    </div>
+    <div class="nav-cta">
+      <a href="/app" class="btn btn-ghost btn-sm">Sign in</a>
+      <a href="/app" class="btn btn-green btn-sm">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>FOR EVERY EARNER — GIG, FREELANCE, SALARIED, SELF-EMPLOYED</span>
+      <h1>Your work is real.<br>Now your <span class="rot" id="rotWord">payslip</span> is too.</h1>
+      <p class="hero-sub">SlipScore turns your income into <strong>verified payslips</strong> and a <strong>growing CIBIL score</strong>. Whether you're starting from zero or pushing for a higher credit limit — banks finally say yes to your loan, your card, your future.</p>
+      <div class="hero-ctas">
+        <a href="/app" class="btn btn-green">Create my first payslip →</a>
+        <a href="#how" class="btn btn-ghost">See how it works</a>
+      </div>
+      <div class="hero-proof">
+        <div class="proof"><div class="n">8</div><div class="l">Indian languages</div></div>
+        <div class="proof"><div class="n">₹200</div><div class="l">to get started / month</div></div>
+        <div class="proof"><div class="n">5 min</div><div class="l">to your first payslip</div></div>
+      </div>
+    </div>
+    <div class="slip-zone">
+      <div class="slip" aria-label="Sample verified payslip">
+        <div class="slip-head">
+          <div class="co">SLIPSCORE PAYSLIP<small>Salary statement · May 2026</small></div>
+          <div class="slip-no">NO. SS-2026-04412<br>UPI-LINKED ✓</div>
+        </div>
+        <div class="slip-body">
+          <div class="slip-row"><span class="k">EMPLOYEE</span><span>RAVI KUMAR M</span></div>
+          <div class="slip-row"><span class="k">WORK TYPE</span><span>DELIVERY PARTNER</span></div>
+          <div class="slip-row"><span class="k">EARNINGS</span><span>₹ 24,300.00</span></div>
+          <div class="slip-row"><span class="k">DEDUCTIONS</span><span>₹ 1,150.00</span></div>
+          <div class="slip-row"><span class="k">DAYS WORKED</span><span>26 / 31</span></div>
+        </div>
+        <div class="slip-total"><span>NET PAY</span><span>₹ 23,150.00</span></div>
+        <div class="slip-foot">
+          <div class="upi">VERIFIED AGAINST UPI INFLOWS<br>REPORTED TO CREDIT BUREAU</div>
+          <div class="stamp">VERIFIED</div>
+        </div>
+      </div>
+      <div class="score-chip">
+        <svg class="gauge" viewBox="0 0 54 54" aria-hidden="true">
+          <circle class="bg" cx="27" cy="27" r="22"></circle>
+          <circle class="fg" cx="27" cy="27" r="22" transform="rotate(-90 27 27)"></circle>
+        </svg>
+        <div>
+          <div class="v">742</div>
+          <div class="t">CIBIL score</div>
+          <div class="up">▲ +118 in 8 months</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="langs" aria-hidden="true">
+  <div class="lang-track">
+    <span><b>தமிழ்</b>உங்கள் சம்பளச்சீட்டு, உங்கள் கடன் மதிப்பு</span>
+    <span><b>हिन्दी</b>आपकी सैलरी स्लिप, आपका क्रेडिट स्कोर</span>
+    <span><b>తెలుగు</b>మీ పేస్లిప్, మీ క్రెడిట్ స్కోర్</span>
+    <span><b>ಕನ್ನಡ</b>ನಿಮ್ಮ ಸಂಬಳ ಚೀಟಿ, ನಿಮ್ಮ ಕ್ರೆಡಿಟ್ ಸ್ಕೋರ್</span>
+    <span><b>മലയാളം</b>നിങ്ങളുടെ ശമ്പള സ്ലിപ്പ്, നിങ്ങളുടെ ക്രെഡിറ്റ് സ്കോർ</span>
+    <span><b>বাংলা</b>আপনার বেতন স্লিপ, আপনার ক্রেডিট স্কোর</span>
+    <span><b>मराठी</b>तुमची पगार स्लिप, तुमचा क्रेडिट स्कोर</span>
+    <span><b>English</b>Your payslip, your credit score</span>
+    <span><b>தமிழ்</b>உங்கள் சம்பளச்சீட்டு, உங்கள் கடன் மதிப்பு</span>
+    <span><b>हिन्दी</b>आपकी सैलरी स्लिप, आपका क्रेडिट स्कोर</span>
+    <span><b>తెలుగు</b>మీ పేస్లిప్, మీ క్రెడిట్ స్కోర్</span>
+    <span><b>ಕನ್ನಡ</b>ನಿಮ್ಮ ಸಂಬಳ ಚೀಟಿ, ನಿಮ್ಮ ಕ್ರೆಡಿಟ್ ಸ್ಕೋರ್</span>
+    <span><b>മലയാളം</b>നിങ്ങളുടെ ശമ്പള സ്ലിപ്പ്, നിങ്ങളുടെ ക്രെഡിറ്റ് സ്കോർ</span>
+    <span><b>বাংলা</b>আপনার বেতন স্লিপ, আপনার ক্রেডিট স্কোর</span>
+    <span><b>मराठी</b>तुमची पगार स्लिप, तुमचा क्रेडिट स्कोर</span>
+    <span><b>English</b>Your payslip, your credit score</span>
+  </div>
+</div>
+
+<section class="problem">
+  <div class="wrap">
+    <div class="sec-eyebrow">The problem</div>
+    <h2>You earn every month.<br>The bank still says "insufficient history."</h2>
+    <p class="sec-sub">Gig workers paid by UPI. Freelancers with irregular invoices. Salaried people with thin credit files and low card limits. India is full of reliable earners the credit system can't properly see.</p>
+    <div class="prob-grid">
+      <div class="prob-card"><div class="big">90%+</div><p>of India's workforce earns informally or irregularly — cash, UPI, invoices — with no payslip a lender will accept.</p></div>
+      <div class="prob-card"><div class="big">Thin file</div><p>No or low CIBIL means "high risk" by default. Loans rejected, cards refused, limits stuck where they started.</p></div>
+      <div class="prob-card"><div class="big">3–5%/mo</div><p>is what informal moneylenders charge instead. The people who can least afford it pay the most.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-eyebrow">How it works</div>
+    <h2>From cash income to credit-worthy in three steps</h2>
+    <p class="sec-sub">No employer needed. No paperwork. Just your phone and the income you already have.</p>
+    <div class="steps">
+      <div class="step"><div class="icon">📲</div><div class="num">STEP 01</div><h3>Record your income</h3><p>Link your UPI or log your daily earnings in your own language. SlipScore organises it into a clean monthly record.</p></div>
+      <div class="step"><div class="icon">🧾</div><div class="num">STEP 02</div><h3>Get verified payslips</h3><p>Every month you receive a professional, verified payslip — the document banks, landlords and embassies ask for.</p></div>
+      <div class="step"><div class="icon">📈</div><div class="num">STEP 03</div><h3>Grow your CIBIL score</h3><p>Your consistent income gets reported through our lending partners — building credit from zero, or pushing your existing score and card limits higher.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="problem">
+  <div class="wrap">
+    <div class="sec-eyebrow">Pricing</div>
+    <h2>Less than a day's earnings. A lifetime of access.</h2>
+    <p class="sec-sub">Simple monthly plans. Cancel anytime. Pay by UPI.</p>
+    <div class="plans">
+      <div class="plan">
+        <div class="name">Starter</div>
+        <div class="price">₹200</div>
+        <div class="per">per month</div>
+        <ul>
+          <li>Monthly verified payslip</li>
+          <li>Income tracking in 8 languages</li>
+          <li>Downloadable PDF statements</li>
+          <li>WhatsApp delivery</li>
+        </ul>
+        <a href="/app" class="btn btn-ghost">Choose Starter</a>
+      </div>
+      <div class="plan featured">
+        <div class="badge">MOST POPULAR</div>
+        <div class="name">Builder</div>
+        <div class="price">₹500</div>
+        <div class="per">per month</div>
+        <ul>
+          <li>Everything in Starter</li>
+          <li>CIBIL score building & tracking</li>
+          <li>Loan eligibility checks</li>
+          <li>Priority support in your language</li>
+        </ul>
+        <a href="/app" class="btn btn-green">Choose Builder</a>
+      </div>
+      <div class="plan">
+        <div class="name">Pro</div>
+        <div class="price">₹1,000</div>
+        <div class="per">per month</div>
+        <ul>
+          <li>Everything in Builder</li>
+          <li>Pre-approved loan offers from partners</li>
+          <li>Credit card matching</li>
+          <li>Family accounts (up to 4 members)</li>
+        </ul>
+        <a href="/app" class="btn btn-ghost">Choose Pro</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="sec-eyebrow">Built in public</div>
+    <h2>Watch us ship, week after week</h2>
+    <p class="sec-sub">We build SlipScore in the open. See what's live, what's coming, and vote on what we build next.</p>
+    <div class="steps" style="margin-top:48px">
+      <div class="step"><div class="num" style="color:var(--green)">● SHIPPED</div><h3>Live right now</h3><p>Verified payslip generator · 8 Indian languages · Full web app · Secure OTP login · Income tracking dashboard</p></div>
+      <div class="step"><div class="num" style="color:var(--gold)">◐ IN BUILD MODE</div><h3>Coming soon</h3><p>WhatsApp payslip delivery · CIBIL score dashboard · UPI income auto-verification · Partner loan offers</p></div>
+      <div class="step"><div class="num" style="color:var(--muted)">○ YOUR IDEAS</div><h3>Vote on what's next</h3><p>Family accounts · Rent verification letters · Voice-based income entry · Credit card matching — tell us what you need most.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="nbfc" class="nbfc">
+  <div class="wrap nbfc-grid">
+    <div>
+      <div class="sec-eyebrow">For NBFCs & lenders</div>
+      <h2>Underwrite the customers everyone else can't see</h2>
+      <p class="sec-sub">SlipScore gives lending partners verified, UPI-backed income data on a market of 40 crore creditworthy-but-invisible borrowers.</p>
+      <ul class="nbfc-points">
+        <li><span class="tick">✓</span>Verified monthly income histories, not self-declared figures</li>
+        <li><span class="tick">✓</span>Pre-qualified borrower pipeline with consent-based data sharing</li>
+        <li><span class="tick">✓</span>Lower acquisition cost, lower default risk, untapped segment</li>
+      </ul>
+      <a href="mailto:partners@slipscore.in" class="btn btn-green" style="margin-top:10px">Partner with us →</a>
+    </div>
+    <div class="nbfc-card">
+      <div class="row"><span class="k">BORROWER_SEGMENT</span><span class="v">GIG / FREELANCE / SALARIED</span></div>
+      <div class="row"><span class="k">INCOME_VERIFICATION</span><span class="v g">UPI-BACKED</span></div>
+      <div class="row"><span class="k">AVG_MONTHLY_INCOME</span><span class="v">₹18,000–32,000</span></div>
+      <div class="row"><span class="k">DATA_CONSENT</span><span class="v g">EXPLICIT, REVOCABLE</span></div>
+      <div class="row"><span class="k">INTEGRATION</span><span class="v">API / BATCH</span></div>
+      <div class="row"><span class="k">STATUS</span><span class="v g">ONBOARDING PARTNERS</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="security">
+  <div class="wrap">
+    <div class="sec-eyebrow">Trust & security</div>
+    <h2>Your money data, guarded like money</h2>
+    <p class="sec-sub">Financial data deserves bank-grade care. That's exactly what it gets.</p>
+    <div class="sec-grid">
+      <div class="sec-card"><div class="ic">🔒</div><h3>Encrypted end to end</h3><p>Your income records and documents are encrypted in transit and at rest. Nobody sees them without your consent.</p></div>
+      <div class="sec-card"><div class="ic">🇮🇳</div><h3>Data stays in India</h3><p>All data is stored on servers in India, in line with RBI data-localisation expectations.</p></div>
+      <div class="sec-card"><div class="ic">✋</div><h3>You control sharing</h3><p>Your data is shared with a lender only when you apply — and you can revoke access any time, from the app.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Start building your<br>financial identity today</h2>
+    <p class="sec-sub">Your first verified payslip is five minutes away.</p>
+    <a href="/app" class="btn btn-green" style="font-size:1.05rem;padding:16px 32px">Create my first payslip →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="col" style="max-width:280px">
+        <a href="#" class="logo" style="margin-bottom:14px"><span class="mark">₹</span>SlipScore<span class="in">.in</span></a>
+        <p style="color:var(--muted);font-size:.88rem">Verified payslips and credit building for every earner in India.</p>
+      </div>
+      <div class="col"><h4>Product</h4><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="/app">Web app</a></div>
+      <div class="col"><h4>Partners</h4><a href="#nbfc">For NBFCs</a><a href="mailto:partners@slipscore.in">Partnership enquiries</a></div>
+      <div class="col"><h4>Company</h4><a href="mailto:hello@slipscore.in">Contact</a><a href="https://instagram.com/slipscorein">Instagram</a><a href="#">Privacy policy</a><a href="#">Terms</a></div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 SlipScore. All rights reserved.</span>
+      <span class="mono">MADE IN INDIA · FOR INDIA 🇮🇳</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const words = ["payslip","சம்பளச்சீட்டு","सैलरी स्लिप","పేస్లిప్","ಸಂಬಳ ಚೀಟಿ","ശമ്പള സ്ലിപ്പ്","বেতন স্লিপ","पगार स्लिप"];
+const el = document.getElementById("rotWord");
+let i = 0;
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (!reduce) {
+  setInterval(() => {
+    i = (i + 1) % words.length;
+    el.style.opacity = 0;
+    setTimeout(() => { el.textContent = words[i]; el.style.opacity = 1; }, 250);
+  }, 2600);
+  el.style.transition = "opacity .25s ease";
+}
+</script>
+</body>
+</html>

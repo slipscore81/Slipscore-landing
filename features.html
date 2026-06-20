@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features — SlipScore</title>
+<meta name="description" content="Everything SlipScore offers — payslips, credit building, loan marketplace, and more.">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0A1322;--ink2:#0F1B30;--green:#2BD98F;--gdim:rgba(43,217,143,.1);--gold:#E8B44C;--text:#E9EEF7;--muted:#8FA3C2;--line:rgba(143,163,194,.14);--mono:'IBM Plex Mono',monospace;--body:'Manrope',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+nav{position:sticky;top:0;z-index:50;background:rgba(10,19,34,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);height:64px;display:flex;align-items:center}
+.nav-in{display:flex;align-items:center;justify-content:space-between;width:100%}
+.logo{font-family:var(--mono);font-weight:600;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+.logo .mark{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--green),#15A56A);display:grid;place-items:center;color:#062316;font-size:.8rem;font-weight:700}
+.logo .dot{color:var(--green)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:.88rem;color:var(--muted);font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.on{color:var(--text)}
+.nav-cta{display:flex;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:9px;font-weight:700;font-size:.88rem;cursor:pointer;border:none;font-family:var(--body);text-decoration:none;transition:all .15s}
+.btn-green{background:var(--green);color:#062316;box-shadow:0 4px 16px rgba(43,217,143,.2)}
+.btn-green:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(43,217,143,.35)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--muted)}
+
+/* Hero */
+.page-hero{padding:80px 0 60px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(43,217,143,.08),transparent 60%);pointer-events:none}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--green);text-transform:uppercase;margin-bottom:14px}
+h1{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin-bottom:16px}
+.hero-sub{color:var(--muted);font-size:1rem;max-width:38rem;margin:0 auto 32px;line-height:1.7}
+
+/* Feature grid */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:60px 0}
+.feat-card{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:28px;transition:border-color .2s,transform .2s}
+.feat-card:hover{border-color:rgba(43,217,143,.3);transform:translateY(-3px)}
+.feat-icon{width:48px;height:48px;border-radius:13px;background:var(--gdim);display:grid;place-items:center;font-size:1.3rem;margin-bottom:18px}
+.feat-card h3{font-size:1rem;font-weight:700;margin-bottom:10px}
+.feat-card p{color:var(--muted);font-size:.88rem;line-height:1.65}
+.feat-tag{display:inline-block;font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;color:var(--green);background:var(--gdim);border:1px solid rgba(43,217,143,.2);border-radius:50px;padding:3px 10px;margin-top:12px}
+
+/* Compare table */
+.compare{margin:80px 0}
+.compare h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.compare p{color:var(--muted);margin-bottom:40px}
+.compare-table{width:100%;border-collapse:collapse;background:var(--ink2);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.compare-table th{padding:16px 20px;text-align:left;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--line);background:var(--ink)}
+.compare-table th:not(:first-child){text-align:center}
+.compare-table td{padding:14px 20px;border-bottom:1px solid rgba(143,163,194,.06);font-size:.9rem}
+.compare-table td:not(:first-child){text-align:center}
+.compare-table tr:last-child td{border-bottom:none}
+.yes{color:var(--green);font-size:1.1rem}
+.no{color:#e74c3c;font-size:1.1rem}
+.sl-col{color:var(--green);font-weight:700}
+
+/* CTA */
+.feat-cta{text-align:center;padding:80px 0;background:var(--ink2);border-top:1px solid var(--line);margin-top:80px}
+.feat-cta h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+.feat-cta p{color:var(--muted);margin-bottom:28px}
+
+footer{border-top:1px solid var(--line);padding:36px 0;background:var(--ink2)}
+.foot-base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.82rem;font-family:var(--mono)}
+
+@media(max-width:768px){.feat-grid{grid-template-columns:1fr}.nav-links{display:none}.compare-table{font-size:.8rem}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-in">
+  <a href="/" class="logo"><div class="mark">₹</div>SlipScore<span class="dot">.in</span></a>
+  <div class="nav-links">
+    <a href="/features" class="on">Features</a>
+    <a href="/how-it-works">How it works</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/use-cases">Use cases</a>
+  </div>
+  <div class="nav-cta">
+    <a href="/app" class="btn btn-ghost">Sign in</a>
+    <a href="/app" class="btn btn-green">Get started →</a>
+  </div>
+</div></nav>
+
+<div class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow">Everything you get</div>
+    <h1>Built for workers.<br>Trusted by lenders.</h1>
+    <p class="hero-sub">SlipScore gives you verified payslips, a growing CIBIL score, and access to loans — all in one platform, in your language.</p>
+    <a href="/app" class="btn btn-green" style="font-size:.95rem;padding:13px 28px">Start free →</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon">📄</div>
+      <h3>Verified Payslips</h3>
+      <p>Professional PDF payslips every month, verified against your UPI bank inflows. Accepted by banks, landlords and embassies.</p>
+      <span class="feat-tag">CORE FEATURE</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📈</div>
+      <h3>CIBIL Score Building</h3>
+      <p>Every monthly payment is reported to CIBIL through our NBFC partners. Go from zero to 700+ in 12 months — guaranteed.</p>
+      <span class="feat-tag">CORE FEATURE</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🏦</div>
+      <h3>Instant Loan Access</h3>
+      <p>After 12 months you have a pre-approved loan waiting. One tap — money in 2 hours. No branch visit. Nobody comes to your workplace.</p>
+      <span class="feat-tag">CORE FEATURE</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">💳</div>
+      <h3>Credit Card Matching</h3>
+      <p>Once your score is ready, we match you with the best entry-level credit cards — SBI, Axis, IDFC First. Apply in one tap.</p>
+      <span class="feat-tag">MARKETPLACE</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🏦</div>
+      <h3>Bank Account Linking</h3>
+      <p>Link your UPI account to automatically verify your income every month. No manual documents. No employer letter needed.</p>
+      <span class="feat-tag">VERIFICATION</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">💬</div>
+      <h3>WhatsApp Delivery</h3>
+      <p>Get your payslip delivered to WhatsApp every month. No app to download. Works on any Android phone, even on slow 3G.</p>
+      <span class="feat-tag">DELIVERY</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌐</div>
+      <h3>8 Indian Languages</h3>
+      <p>Full platform in Tamil, Hindi, Telugu, Kannada, Marathi, Malayalam, Bengali and English. Your language, your comfort.</p>
+      <span class="feat-tag">LOCALISATION</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">💰</div>
+      <h3>Savings Return</h3>
+      <p>A portion of your monthly payments is returned after 12 months. It's not a cost — it's forced savings that come back to you.</p>
+      <span class="feat-tag">FINANCIAL</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔒</div>
+      <h3>100% Private</h3>
+      <p>Digital repayments only. Nobody visits your workplace, calls your employer, or contacts your family. Ever.</p>
+      <span class="feat-tag">PRIVACY</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📊</div>
+      <h3>Score Dashboard</h3>
+      <p>Track your CIBIL score month by month in the app. See exactly how much it's growing and when you'll unlock your loan.</p>
+      <span class="feat-tag">DASHBOARD</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📋</div>
+      <h3>Income Certificate</h3>
+      <p>Plus and Pro members get an official income certificate — accepted for visa applications, rental agreements and more.</p>
+      <span class="feat-tag">PLUS & PRO</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚡</div>
+      <h3>UPI AutoPay</h3>
+      <p>Set up once and never miss a payment. Monthly subscription auto-debited via UPI — your credit score keeps building without you lifting a finger.</p>
+      <span class="feat-tag">PAYMENTS</span>
+    </div>
+  </div>
+
+  <!-- Comparison table -->
+  <div class="compare">
+    <div class="eyebrow">Why SlipScore</div>
+    <h2>SlipScore vs the alternatives</h2>
+    <p class="hero-sub" style="margin:0 0 40px;text-align:left">How we compare to moneylenders, banks and other fintech apps.</p>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="sl-col">SlipScore ✓</th>
+          <th>Banks</th>
+          <th>Moneylenders</th>
+          <th>Other fintechs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>No payslip needed to start</td><td class="yes sl-col">✓</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td></tr>
+        <tr><td>Builds CIBIL score</td><td class="yes sl-col">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>Generates verified payslip</td><td class="yes sl-col">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>Interest rate below 20%</td><td class="yes sl-col">✓</td><td class="yes">✓</td><td class="no">✗ 36–60%</td><td class="yes">✓</td></tr>
+        <tr><td>No workplace visits</td><td class="yes sl-col">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="yes">✓</td></tr>
+        <tr><td>Works for informal workers</td><td class="yes sl-col">✓</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td></tr>
+        <tr><td>Starts from ₹200/month</td><td class="yes sl-col">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>Returns savings after 12 months</td><td class="yes sl-col">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>8 Indian languages</td><td class="yes sl-col">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="feat-cta">
+  <div class="wrap">
+    <h2>Ready to build your<br>financial identity?</h2>
+    <p>First payslip is completely free. No card needed.</p>
+    <a href="/app" class="btn btn-green" style="font-size:.95rem;padding:13px 28px">Create my first payslip →</a>
+  </div>
+</div>
+
+<footer><div class="wrap"><div class="foot-base">
+  <span>© 2026 SlipScore. All rights reserved.</span>
+  <span>MADE IN INDIA · FOR INDIA 🇮🇳</span>
+</div></div></footer>
+</body>
+</html>

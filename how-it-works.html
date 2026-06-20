@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works — SlipScore</title>
+<meta name="description" content="How SlipScore builds your payslip, credit score and loan access in 12 months.">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0A1322;--ink2:#0F1B30;--green:#2BD98F;--gdim:rgba(43,217,143,.1);--gold:#E8B44C;--text:#E9EEF7;--muted:#8FA3C2;--line:rgba(143,163,194,.14);--mono:'IBM Plex Mono',monospace;--body:'Manrope',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+nav{position:sticky;top:0;z-index:50;background:rgba(10,19,34,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);height:64px;display:flex;align-items:center}
+.nav-in{display:flex;align-items:center;justify-content:space-between;width:100%}
+.logo{font-family:var(--mono);font-weight:600;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+.logo .mark{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--green),#15A56A);display:grid;place-items:center;color:#062316;font-size:.8rem;font-weight:700}
+.logo .dot{color:var(--green)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:.88rem;color:var(--muted);font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.on{color:var(--text)}
+.nav-cta{display:flex;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:9px;font-weight:700;font-size:.88rem;cursor:pointer;border:none;font-family:var(--body);text-decoration:none;transition:all .15s}
+.btn-green{background:var(--green);color:#062316;box-shadow:0 4px 16px rgba(43,217,143,.2)}
+.btn-green:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(43,217,143,.35)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--green);text-transform:uppercase;margin-bottom:14px}
+h1{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin-bottom:16px}
+.hero-sub{color:var(--muted);font-size:1rem;max-width:38rem;margin:0 auto 32px;line-height:1.7}
+
+/* Timeline */
+.timeline{padding:80px 0}
+.tl-item{display:grid;grid-template-columns:80px 1fr;gap:32px;margin-bottom:60px;position:relative}
+.tl-item::before{content:'';position:absolute;left:39px;top:80px;bottom:-60px;width:2px;background:linear-gradient(var(--green),var(--line));opacity:.4}
+.tl-item:last-child::before{display:none}
+.tl-left{display:flex;flex-direction:column;align-items:center;gap:12px}
+.tl-num{width:52px;height:52px;border-radius:50%;background:var(--gdim);border:2px solid var(--green);display:grid;place-items:center;font-family:var(--mono);font-weight:600;font-size:1rem;color:var(--green);flex-shrink:0}
+.tl-right{padding-top:8px}
+.tl-label{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:8px}
+.tl-right h2{font-size:1.4rem;font-weight:700;letter-spacing:-.02em;margin-bottom:10px}
+.tl-right p{color:var(--muted);font-size:.92rem;line-height:1.7;max-width:560px;margin-bottom:16px}
+.tl-card{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:18px;max-width:480px}
+.tl-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(143,163,194,.08);font-size:.85rem}
+.tl-row:last-child{border:none}
+.tl-row .k{color:var(--muted)}
+.tl-row .v{font-family:var(--mono);color:#fff;font-weight:500}
+.tl-row .v.g{color:var(--green)}
+
+/* FAQ */
+.faq{padding:60px 0 80px}
+.faq h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:36px}
+.faq-item{border-bottom:1px solid var(--line);padding:20px 0;cursor:pointer}
+.faq-q{display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.95rem}
+.faq-a{color:var(--muted);font-size:.9rem;line-height:1.7;margin-top:12px;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-icon{transition:transform .2s;color:var(--green);font-size:1.1rem}
+
+/* CTA */
+.hiw-cta{text-align:center;padding:80px 0;background:var(--ink2);border-top:1px solid var(--line)}
+.hiw-cta h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+.hiw-cta p{color:var(--muted);margin-bottom:28px}
+
+footer{border-top:1px solid var(--line);padding:36px 0;background:var(--ink2)}
+.foot-base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.82rem;font-family:var(--mono)}
+@media(max-width:768px){.nav-links{display:none}.tl-item{grid-template-columns:1fr}.tl-left{flex-direction:row;justify-content:flex-start}.tl-item::before{display:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-in">
+  <a href="/" class="logo"><div class="mark">₹</div>SlipScore<span class="dot">.in</span></a>
+  <div class="nav-links">
+    <a href="/features">Features</a>
+    <a href="/how-it-works" class="on">How it works</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/use-cases">Use cases</a>
+  </div>
+  <div class="nav-cta">
+    <a href="/app" class="btn btn-ghost">Sign in</a>
+    <a href="/app" class="btn btn-green">Get started →</a>
+  </div>
+</div></nav>
+
+<div style="padding:80px 0 60px;text-align:center;position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(43,217,143,.08),transparent 60%);pointer-events:none"></div>
+  <div class="wrap">
+    <div class="eyebrow">The journey</div>
+    <h1>From zero to loan-ready<br>in 12 months</h1>
+    <p class="hero-sub">No employer needed. No complicated documents. Just your phone, your income, and 12 months of consistency.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-num">01</div></div>
+      <div class="tl-right">
+        <div class="tl-label">Day 1 — 5 minutes</div>
+        <h2>Sign up on WhatsApp</h2>
+        <p>Message SlipScore on WhatsApp. Tell us your name, monthly earnings and where you work. No documents needed. No employer letter. Just the basics.</p>
+        <p>We verify your identity with Aadhaar OTP — takes 2 minutes.</p>
+        <div class="tl-card">
+          <div class="tl-row"><span class="k">Time needed</span><span class="v g">5 minutes</span></div>
+          <div class="tl-row"><span class="k">Documents</span><span class="v g">None required</span></div>
+          <div class="tl-row"><span class="k">First payslip</span><span class="v g">Free — sent immediately</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-num">02</div></div>
+      <div class="tl-right">
+        <div class="tl-label">Day 2 — Link your bank</div>
+        <h2>Link your UPI bank account</h2>
+        <p>Connect your bank account via our secure UPI integration. We read your income deposits to verify your earnings are real — not self-declared.</p>
+        <p>This is what makes your payslip trusted by banks and NBFCs. Real data. Real verification.</p>
+        <div class="tl-card">
+          <div class="tl-row"><span class="k">Verification method</span><span class="v">UPI inflow analysis</span></div>
+          <div class="tl-row"><span class="k">Data access</span><span class="v">Read-only. We never touch your money</span></div>
+          <div class="tl-row"><span class="k">Consent</span><span class="v g">Revocable anytime</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-num">03</div></div>
+      <div class="tl-right">
+        <div class="tl-label">Month 1–12 — Every month</div>
+        <h2>Pay monthly. Get your payslip.</h2>
+        <p>Pay ₹200/month via UPI AutoPay. Every month you receive a professional PDF payslip on WhatsApp — verified against your bank data.</p>
+        <p>Every payment is reported to CIBIL through our NBFC partner. Your score builds month by month.</p>
+        <div class="tl-card">
+          <div class="tl-row"><span class="k">Monthly payment</span><span class="v">₹200 / ₹500 / ₹1,000</span></div>
+          <div class="tl-row"><span class="k">What you receive</span><span class="v">Verified PDF payslip</span></div>
+          <div class="tl-row"><span class="k">CIBIL reporting</span><span class="v g">Every month via NBFC</span></div>
+          <div class="tl-row"><span class="k">Score growth</span><span class="v g">+15–25 points per month</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-num">04</div></div>
+      <div class="tl-right">
+        <div class="tl-label">Month 12 — Loan day</div>
+        <h2>Your loan is ready. One tap.</h2>
+        <p>After 12 consecutive payments you have 12 verified payslips, a CIBIL score above 700, and a pre-approved loan from our NBFC partners.</p>
+        <p>One button in the app. Money in your account within 2 hours. Nobody visits your workplace. Nobody calls your employer.</p>
+        <div class="tl-card">
+          <div class="tl-row"><span class="k">Loan amount (Basic)</span><span class="v g">Up to ₹25,000</span></div>
+          <div class="tl-row"><span class="k">Loan amount (Plus)</span><span class="v g">Up to ₹50,000</span></div>
+          <div class="tl-row"><span class="k">Loan amount (Pro)</span><span class="v g">Up to ₹5,00,000</span></div>
+          <div class="tl-row"><span class="k">Disbursal time</span><span class="v g">2 hours</span></div>
+          <div class="tl-row"><span class="k">Savings returned</span><span class="v g">₹1,900 back to you</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <div class="eyebrow">Common questions</div>
+    <h2>Things people ask us</h2>
+
+    <div class="faq-item open" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Is the payslip legally valid? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes. SlipScore payslips are generated based on verified UPI bank data and issued by a registered company. They are accepted by NBFCs for loan applications, by landlords for rental agreements, and by embassies for visa applications. They carry our company stamp, registration number and a QR code for instant verification.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What if I miss a payment? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Missing one payment pauses your CIBIL reporting for that month and delays your 12-month journey. You can resume the next month. However, 3 consecutive missed payments will close your account and your savings will be returned after deducting a small fee. We always send reminders before payment is due.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How is my money safe? <span class="faq-icon">+</span></div>
+      <div class="faq-a">All subscription payments are held in a dedicated escrow account — separate from SlipScore's operating funds. Your savings are never used for anything else. After 12 months, ₹1,900 (Basic) is returned directly to your bank account via UPI.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Do I need a formal employer? <span class="faq-icon">+</span></div>
+      <div class="faq-a">No. SlipScore is designed specifically for workers without a formal employer — gig workers, self-employed, daily wage earners, freelancers, shop owners, salon staff, delivery workers. Anyone with regular income qualifies.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Is the loan guaranteed? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Members who complete all 12 payments with a clean record are pre-qualified for a loan from our NBFC partners. The final loan decision is made by the NBFC based on their credit policy. In our experience, members who complete the full 12 months have a very high approval rate.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Can I cancel anytime? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes. You can cancel your subscription at any time. Your savings up to the point of cancellation will be returned after deducting a small processing fee. Note that cancelling before 12 months means you will not receive the pre-approved loan offer.</div>
+    </div>
+  </div>
+</div>
+
+<div class="hiw-cta">
+  <div class="wrap">
+    <h2>Ready to start your<br>12-month journey?</h2>
+    <p>First payslip is free. No documents needed. Takes 5 minutes.</p>
+    <a href="/app" class="btn btn-green" style="font-size:.95rem;padding:13px 28px">Get started free →</a>
+  </div>
+</div>
+
+<footer><div class="wrap"><div class="foot-base">
+  <span>© 2026 SlipScore. All rights reserved.</span>
+  <span>MADE IN INDIA · FOR INDIA 🇮🇳</span>
+</div></div></footer>
+</body>
+</html>

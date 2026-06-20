@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Cases — SlipScore</title>
+<meta name="description" content="How different workers use SlipScore to build their financial identity.">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0A1322;--ink2:#0F1B30;--green:#2BD98F;--gdim:rgba(43,217,143,.1);--gold:#E8B44C;--text:#E9EEF7;--muted:#8FA3C2;--line:rgba(143,163,194,.14);--mono:'IBM Plex Mono',monospace;--body:'Manrope',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+nav{position:sticky;top:0;z-index:50;background:rgba(10,19,34,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);height:64px;display:flex;align-items:center}
+.nav-in{display:flex;align-items:center;justify-content:space-between;width:100%}
+.logo{font-family:var(--mono);font-weight:600;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+.logo .mark{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--green),#15A56A);display:grid;place-items:center;color:#062316;font-size:.8rem;font-weight:700}
+.logo .dot{color:var(--green)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:.88rem;color:var(--muted);font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.on{color:var(--text)}
+.nav-cta{display:flex;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:9px;font-weight:700;font-size:.88rem;cursor:pointer;border:none;font-family:var(--body);text-decoration:none;transition:all .15s}
+.btn-green{background:var(--green);color:#062316;box-shadow:0 4px 16px rgba(43,217,143,.2)}
+.btn-green:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(43,217,143,.35)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--green);text-transform:uppercase;margin-bottom:14px}
+
+.page-hero{padding:80px 0 60px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(43,217,143,.08),transparent 60%);pointer-events:none}
+h1{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin-bottom:16px}
+.hero-sub{color:var(--muted);font-size:1rem;max-width:38rem;margin:0 auto;line-height:1.7}
+
+/* Story cards */
+.stories{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:60px 0}
+.story{background:var(--ink2);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:border-color .2s,transform .2s}
+.story:hover{border-color:rgba(43,217,143,.25);transform:translateY(-3px)}
+.story-top{padding:28px;border-bottom:1px solid var(--line)}
+.story-avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:1.4rem;margin-bottom:16px}
+.story-name{font-weight:700;font-size:1.05rem;margin-bottom:4px}
+.story-role{font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.story-quote{font-size:.92rem;color:var(--text);line-height:1.7;margin-top:14px;font-style:italic}
+.story-quote::before{content:'"';color:var(--green);font-size:1.5rem;line-height:0;vertical-align:-.3em;margin-right:4px}
+.story-bottom{padding:20px 28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.story-stat .n{font-family:var(--mono);font-weight:600;font-size:1.1rem;color:var(--green)}
+.story-stat .l{font-size:.72rem;color:var(--muted);margin-top:2px}
+
+/* Worker types */
+.worker-types{padding:60px 0;background:var(--ink2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.wt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.wt-card{background:var(--ink);border:1px solid var(--line);border-radius:14px;padding:22px;text-align:center}
+.wt-icon{font-size:2rem;margin-bottom:12px}
+.wt-name{font-weight:700;font-size:.92rem;margin-bottom:6px}
+.wt-desc{font-size:.8rem;color:var(--muted);line-height:1.6}
+
+/* Use case list */
+.use-list{padding:60px 0}
+.use-list h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:36px}
+.use-item{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--line)}
+.use-item:last-child{border:none}
+.use-icon{width:44px;height:44px;border-radius:12px;background:var(--gdim);display:grid;place-items:center;font-size:1.1rem;flex-shrink:0}
+.use-info h3{font-size:.95rem;font-weight:700;margin-bottom:6px}
+.use-info p{font-size:.88rem;color:var(--muted);line-height:1.65}
+
+/* CTA */
+.uc-cta{text-align:center;padding:80px 0}
+.uc-cta h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+.uc-cta p{color:var(--muted);margin-bottom:28px}
+
+footer{border-top:1px solid var(--line);padding:36px 0;background:var(--ink2)}
+.foot-base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.82rem;font-family:var(--mono)}
+@media(max-width:768px){.stories{grid-template-columns:1fr}.wt-grid{grid-template-columns:1fr 1fr}.nav-links{display:none}.story-bottom{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-in">
+  <a href="/" class="logo"><div class="mark">₹</div>SlipScore<span class="dot">.in</span></a>
+  <div class="nav-links">
+    <a href="/features">Features</a>
+    <a href="/how-it-works">How it works</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/use-cases" class="on">Use cases</a>
+  </div>
+  <div class="nav-cta">
+    <a href="/app" class="btn btn-ghost">Sign in</a>
+    <a href="/app" class="btn btn-green">Get started →</a>
+  </div>
+</div></nav>
+
+<div class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow">Real people. Real results.</div>
+    <h1>SlipScore works for<br>every kind of earner</h1>
+    <p class="hero-sub">From salon workers to delivery partners — see how people like you are building their financial identity with SlipScore.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stories">
+    <div class="story">
+      <div class="story-top">
+        <div class="story-avatar" style="background:rgba(59,130,246,.15)">💇</div>
+        <div class="story-name">Ravi Kumar M</div>
+        <div class="story-role">SALON WORKER · CHENNAI · BASIC PLAN</div>
+        <div class="story-quote">I work in a salon and get paid cash every month. Banks always said no because I had no payslip. SlipScore gave me my first payslip in 5 minutes. After 12 months I got a ₹25,000 loan — paid for my daughter's school fees.</div>
+      </div>
+      <div class="story-bottom">
+        <div class="story-stat"><div class="n">742</div><div class="l">CIBIL score</div></div>
+        <div class="story-stat"><div class="n">12</div><div class="l">Payslips earned</div></div>
+        <div class="story-stat"><div class="n">₹25K</div><div class="l">Loan received</div></div>
+      </div>
+    </div>
+    <div class="story">
+      <div class="story-top">
+        <div class="story-avatar" style="background:rgba(139,92,246,.15)">🛵</div>
+        <div class="story-name">Priya Devi K</div>
+        <div class="story-role">DELIVERY PARTNER · MADURAI · PLUS PLAN</div>
+        <div class="story-quote">I do Swiggy and Zomato deliveries. My income is irregular — some months ₹18,000, some months ₹28,000. SlipScore averaged my income and gave me a proper payslip. Got approved for a ₹50,000 loan to buy a new bike.</div>
+      </div>
+      <div class="story-bottom">
+        <div class="story-stat"><div class="n">698</div><div class="l">CIBIL score</div></div>
+        <div class="story-stat"><div class="n">12</div><div class="l">Payslips earned</div></div>
+        <div class="story-stat"><div class="n">₹50K</div><div class="l">Loan received</div></div>
+      </div>
+    </div>
+    <div class="story">
+      <div class="story-top">
+        <div class="story-avatar" style="background:rgba(236,72,153,.15)">🏪</div>
+        <div class="story-name">Mohan S</div>
+        <div class="story-role">SHOP OWNER · COIMBATORE · PRO PLAN</div>
+        <div class="story-quote">I run a small grocery shop. No salary slip, no formal accounts. Moneylenders used to charge me 3% a month. SlipScore helped me build a real credit profile. Got ₹1 lakh from KreditBee at 20% per year — saved lakhs in interest.</div>
+      </div>
+      <div class="story-bottom">
+        <div class="story-stat"><div class="n">745</div><div class="l">CIBIL score</div></div>
+        <div class="story-stat"><div class="n">12</div><div class="l">Payslips earned</div></div>
+        <div class="story-stat"><div class="n">₹1L</div><div class="l">Loan received</div></div>
+      </div>
+    </div>
+    <div class="story">
+      <div class="story-top">
+        <div class="story-avatar" style="background:rgba(245,158,11,.15)">🏗️</div>
+        <div class="story-name">Suresh V</div>
+        <div class="story-role">CONSTRUCTION WORKER · TRICHY · BASIC PLAN</div>
+        <div class="story-quote">My contractor pays daily wages in cash. No bank transfer, no slip. I uploaded my savings account statements to SlipScore. They built my payslip from my weekly deposits. First credit card approved after 8 months. Life changing.</div>
+      </div>
+      <div class="story-bottom">
+        <div class="story-stat"><div class="n">634</div><div class="l">CIBIL score</div></div>
+        <div class="story-stat"><div class="n">8</div><div class="l">Months done</div></div>
+        <div class="story-stat"><div class="n">1</div><div class="l">Card approved</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="worker-types">
+  <div class="wrap">
+    <div class="eyebrow">Who uses SlipScore</div>
+    <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:8px">Built for India's 500 million informal workers</h2>
+    <p style="color:var(--muted);font-size:.92rem">If you earn regularly but don't have a formal payslip — SlipScore is for you.</p>
+    <div class="wt-grid">
+      <div class="wt-card"><div class="wt-icon">💇</div><div class="wt-name">Salon & Beauty</div><div class="wt-desc">Barbers, beauticians, spa workers paid in cash</div></div>
+      <div class="wt-card"><div class="wt-icon">🛵</div><div class="wt-name">Gig Delivery</div><div class="wt-desc">Swiggy, Zomato, Dunzo, Amazon delivery partners</div></div>
+      <div class="wt-card"><div class="wt-icon">🏪</div><div class="wt-name">Shop Workers</div><div class="wt-desc">Retail staff, kirana workers, market vendors</div></div>
+      <div class="wt-card"><div class="wt-icon">🏗️</div><div class="wt-name">Construction</div><div class="wt-desc">Daily wage workers, masons, electricians</div></div>
+      <div class="wt-card"><div class="wt-icon">🚕</div><div class="wt-name">Drivers</div><div class="wt-desc">Auto, cab, truck drivers — Ola, Uber, local</div></div>
+      <div class="wt-card"><div class="wt-icon">🍳</div><div class="wt-name">Domestic Work</div><div class="wt-desc">Cooks, housekeepers, childcare workers</div></div>
+      <div class="wt-card"><div class="wt-icon">💻</div><div class="wt-name">Freelancers</div><div class="wt-desc">Designers, developers, writers paid per project</div></div>
+      <div class="wt-card"><div class="wt-icon">🏥</div><div class="wt-name">Healthcare</div><div class="wt-desc">Nurses, ward boys, clinic staff on informal salary</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="use-list">
+    <div class="eyebrow">What people use payslips for</div>
+    <h2>Beyond loans — your payslip opens doors</h2>
+    <div class="use-item">
+      <div class="use-icon">🏠</div>
+      <div class="use-info"><h3>Rental agreements</h3><p>Landlords in cities like Chennai, Mumbai and Bangalore now accept SlipScore payslips as income proof for flat rentals.</p></div>
+    </div>
+    <div class="use-item">
+      <div class="use-icon">✈️</div>
+      <div class="use-info"><h3>Visa applications</h3><p>Embassies require income proof. SlipScore payslips with UPI verification are accepted for tourist visa applications.</p></div>
+    </div>
+    <div class="use-item">
+      <div class="use-icon">💳</div>
+      <div class="use-info"><h3>Credit card applications</h3><p>Once your CIBIL score reaches 650+, you qualify for entry-level credit cards from SBI, Axis and IDFC First.</p></div>
+    </div>
+    <div class="use-item">
+      <div class="use-icon">🏦</div>
+      <div class="use-info"><h3>Bank account upgrades</h3><p>Upgrade from basic savings to salary account with higher transaction limits and better interest rates.</p></div>
+    </div>
+    <div class="use-item">
+      <div class="use-icon">📱</div>
+      <div class="use-info"><h3>EMI purchases</h3><p>Buy a new phone, appliance or vehicle on EMI — retailers accept SlipScore payslips as income proof.</p></div>
+    </div>
+    <div class="use-item">
+      <div class="use-icon">🏫</div>
+      <div class="use-info"><h3>School fee loans</h3><p>Education loans for children's school fees — one of the most common uses among SlipScore members.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="uc-cta" style="background:var(--ink2);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2>Join workers building their<br>financial identity</h2>
+    <p>First payslip is free. No documents needed. Takes 5 minutes.</p>
+    <a href="/app" class="btn btn-green" style="font-size:.95rem;padding:13px 28px">Get started free →</a>
+  </div>
+</div>
+
+<footer><div class="wrap"><div class="foot-base">
+  <span>© 2026 SlipScore. All rights reserved.</span>
+  <span>MADE IN INDIA · FOR INDIA 🇮🇳</span>
+</div></div></footer>
+</body>
+</html>

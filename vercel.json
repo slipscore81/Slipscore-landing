@@ -1,6 +1,10 @@
 {
   "rewrites": [
     { "source": "/app", "destination": "/app.html" },
-    { "source": "/lms", "destination": "/lms.html" }
+    { "source": "/lms", "destination": "/lms.html" },
+    { "source": "/features", "destination": "/features.html" },
+    { "source": "/how-it-works", "destination": "/how-it-works.html" },
+    { "source": "/use-cases", "destination": "/use-cases.html" },
+    { "source": "/refund", "destination": "/refund.html" }
   ]
 }

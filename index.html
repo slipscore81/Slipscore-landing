@@ -411,6 +411,19 @@ footer { background: var(--ink2); border-top: 1px solid var(--line); padding: 52
 </head>
 <body>
 
+<!-- MOBILE MENU -->
+<div id="mobileMenu" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(10,19,34,.97);flex-direction:column;padding:80px 32px 40px">
+  <button onclick="closeMobile()" style="position:absolute;top:20px;right:20px;background:none;border:none;color:#8FA3C2;font-size:1.4rem;cursor:pointer">✕</button>
+  <a href="/features" onclick="closeMobile()" style="display:block;color:#E9EEF7;font-size:1.2rem;font-weight:600;padding:16px 0;border-bottom:1px solid rgba(143,163,194,.14);text-decoration:none">Features</a>
+  <a href="/how-it-works" onclick="closeMobile()" style="display:block;color:#E9EEF7;font-size:1.2rem;font-weight:600;padding:16px 0;border-bottom:1px solid rgba(143,163,194,.14);text-decoration:none">How it works</a>
+  <a href="/#pricing" onclick="closeMobile()" style="display:block;color:#E9EEF7;font-size:1.2rem;font-weight:600;padding:16px 0;border-bottom:1px solid rgba(143,163,194,.14);text-decoration:none">Pricing</a>
+  <a href="/use-cases" onclick="closeMobile()" style="display:block;color:#E9EEF7;font-size:1.2rem;font-weight:600;padding:16px 0;border-bottom:1px solid rgba(143,163,194,.14);text-decoration:none">Use cases</a>
+  <a href="#nbfc" onclick="closeMobile()" style="display:block;color:#E9EEF7;font-size:1.2rem;font-weight:600;padding:16px 0;border-bottom:1px solid rgba(143,163,194,.14);text-decoration:none">For lenders</a>
+  <a href="/lms" onclick="closeMobile()" style="display:block;color:#8FA3C2;font-size:1rem;font-weight:500;padding:16px 0;border-bottom:1px solid rgba(143,163,194,.14);text-decoration:none">LMS Dashboard</a>
+  <a href="/refund" onclick="closeMobile()" style="display:block;color:#8FA3C2;font-size:1rem;font-weight:500;padding:16px 0;border-bottom:1px solid rgba(143,163,194,.14);text-decoration:none">Refund Policy</a>
+  <a href="/app" class="nav-btn" style="margin-top:28px;justify-content:center;font-size:1rem;padding:14px 28px">Get started →</a>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
@@ -418,13 +431,25 @@ footer { background: var(--ink2); border-top: 1px solid var(--line); padding: 52
     SlipScore<span class="dot">.in</span>
   </div>
   <div class="nav-links">
-    <a href="#how">How it works</a>
-    <a href="#pricing">Pricing</a>
+    <a href="/features">Features</a>
+    <a href="/how-it-works">How it works</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/use-cases">Use cases</a>
     <a href="#nbfc">For lenders</a>
-    <a href="#security">Security</a>
   </div>
-  <a href="/app" class="nav-btn">Get started →</a>
+  <div style="display:flex;gap:10px;align-items:center">
+    <a href="/app" style="font-size:.88rem;color:var(--muted);font-weight:500;text-decoration:none;display:none" class="desktop-only">Sign in</a>
+    <a href="/app" class="nav-btn desktop-only">Get started →</a>
+    <button onclick="openMobile()" class="mobile-menu-btn" style="background:none;border:1px solid rgba(143,163,194,.2);border-radius:8px;color:#E9EEF7;cursor:pointer;padding:8px 12px;font-size:1rem;display:none">☰</button>
+  </div>
 </nav>
+
+<style>
+@media(max-width:900px){
+  .desktop-only{display:none!important}
+  .mobile-menu-btn{display:flex!important}
+}
+</style>
 
 <!-- SCROLL HERO -->
 <div class="scroll-hero" id="scrollHero">
@@ -731,8 +756,8 @@ footer { background: var(--ink2); border-top: 1px solid var(--line); padding: 52
       </div>
       <div class="foot-col">
         <h4>Product</h4>
-        <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
+        <a href="/features">Features</a>
+        <a href="/how-it-works">How it works</a>
         <a href="/app">Web app</a>
       </div>
       <div class="foot-col">
@@ -850,6 +875,16 @@ footer { background: var(--ink2); border-top: 1px solid var(--line); padding: 52
 </div>
 
 <script>
+function openMobile(){
+  const m=document.getElementById('mobileMenu');
+  m.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeMobile(){
+  document.getElementById('mobileMenu').style.display='none';
+  document.body.style.overflow='';
+}
+
 // ── ROTATING WORD ──
 const words = ["payslip","சம்பளச்சீட்டு","सैलरी स्लिप","పేస్లిప్","ಸಂಬಳ ಚೀಟಿ","ശമ്പള സ്ലിപ്പ്","বেতন স্লিপ","पगार स्लिप"];
 const rotEl = document.getElementById('rotWord');

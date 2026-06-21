@@ -222,13 +222,9 @@ body{background:#0A0F0D;color:#E8F0EA;font-family:-apple-system,BlinkMacSystemFo
   <div id="lf-email-otp" style="display:none;width:100%;text-align:center">
     <div style="font-size:13px;color:#6B7F70;margin-bottom:4px">OTP sent to your email</div>
     <div style="font-size:12px;color:#00C896;margin-bottom:16px">Check your inbox & spam folder</div>
-    <div class="otp-wrap">
-      <input class="obox" maxlength="1" type="number" id="e1" oninput="eNext(1)">
-      <input class="obox" maxlength="1" type="number" id="e2" oninput="eNext(2)">
-      <input class="obox" maxlength="1" type="number" id="e3" oninput="eNext(3)">
-      <input class="obox" maxlength="1" type="number" id="e4" oninput="eNext(4)">
-      <input class="obox" maxlength="1" type="number" id="e5" oninput="eNext(5)">
-      <input class="obox" maxlength="1" type="number" id="e6" oninput="eNext(6)">
+    <div class="field" style="text-align:left">
+      <label>Enter 6-digit OTP</label>
+      <input type="number" id="otp-single" placeholder="123456" style="font-size:24px;text-align:center;letter-spacing:8px;font-weight:700"/>
     </div>
     <button class="gbtn" id="verify-btn" onclick="verifyEmailOTP()">Verify & Enter →</button>
     <button class="wbtn" onclick="backEmail()">← Change Email</button>
@@ -667,10 +663,7 @@ function backEmail(){
 
 async function verifyEmailOTP(){
   const email = document.getElementById('em-inp').value.trim();
-  const otp = [1,2,3,4,5,6].map(i=>{
-    const el=document.getElementById('e'+i);
-    return el ? el.value : '';
-  }).join('');
+  const otp = document.getElementById('otp-single').value.trim();
   if(otp.length < 6){ toast('Enter the 6-digit OTP'); return; }
   const btn = document.getElementById('verify-btn');
   btn.textContent = 'Verifying...';

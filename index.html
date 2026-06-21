@@ -59,11 +59,10 @@ nav {
 .nav-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(43,217,143,.35); }
 
 /* ── SCROLL HERO ── */
-.scroll-hero { position: relative; height: 400vh; }
+.scroll-hero { position: relative; height: auto; }
 .scroll-sticky {
-  position: sticky; top: 0; height: 100vh; width: 100%;
   display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
+  padding: 100px 32px 80px; flex-wrap: wrap; gap: 60px;
 }
 
 /* Background glow */
@@ -178,20 +177,16 @@ nav {
   display: flex; justify-content: space-between;
   padding: 7px 0; border-bottom: 1px dotted var(--paper-line);
   font-size: .76rem;
-  /* scroll animated */
-  opacity: 0; transform: translateX(-8px);
-  transition: opacity .4s ease, transform .4s ease;
+  opacity: 1; transform: none;
 }
-.ps-row.visible { opacity: 1; transform: translateX(0); }
 .ps-row .k { color: #6E7587; }
 
 .ps-total {
   display: flex; justify-content: space-between;
   padding: 13px 22px; background: var(--paper2);
   font-weight: 600; font-size: .88rem;
-  opacity: 0; transition: opacity .5s ease .2s;
+  opacity: 1;
 }
-.ps-total.visible { opacity: 1; }
 
 .ps-foot {
   display: flex; justify-content: space-between; align-items: center;
@@ -203,10 +198,8 @@ nav {
   border: 2.5px solid #1B9E63; color: #1B9E63;
   border-radius: 5px; padding: 5px 11px;
   font-weight: 600; font-size: .74rem; letter-spacing: .14em;
-  transform: rotate(-8deg) scale(0);
-  transition: transform .5s cubic-bezier(.2,2,.4,1);
+  transform: rotate(-8deg) scale(1);
 }
-.stamp.visible { transform: rotate(-8deg) scale(1); }
 
 /* QR placeholder */
 .ps-qr {
@@ -224,9 +217,8 @@ nav {
   display: flex; align-items: center; gap: 14px;
   box-shadow: 0 20px 60px rgba(0,0,0,.6);
   transform: rotate(2deg);
-  opacity: 0; transition: opacity .5s ease;
+  opacity: 1;
 }
-.score-chip.visible { opacity: 1; }
 
 .gauge-wrap { position: relative; width: 52px; height: 52px; }
 .gauge-wrap svg { transform: rotate(-90deg); }
@@ -235,8 +227,7 @@ nav {
   fill: none; stroke: var(--green); stroke-width: 5;
   stroke-linecap: round;
   stroke-dasharray: 138;
-  stroke-dashoffset: 138;
-  transition: stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1);
+  stroke-dashoffset: 34;
 }
 .gauge-num {
   position: absolute; inset: 0; display: flex; align-items: center;
@@ -897,90 +888,10 @@ setInterval(() => {
 }, 2600);
 
 // ── SCROLL ANIMATION ──
-const hero = document.getElementById('scrollHero');
-const rows = [
-  document.getElementById('row1'),
-  document.getElementById('row2'),
-  document.getElementById('row3'),
-  document.getElementById('row4'),
-  document.getElementById('row5'),
-];
-const psTotal = document.getElementById('psTotal');
-const stamp = document.getElementById('stamp');
-const scoreChip = document.getElementById('scoreChip');
-const gaugeFill = document.getElementById('gaugeFill');
 const gaugeNum = document.getElementById('gaugeNum');
-const barFill = document.getElementById('barFill');
-const progressLabel = document.getElementById('progressLabel');
 
-const labels = [
-  'RECORDING YOUR INCOME...',
-  'VERIFYING UPI INFLOWS...',
-  'GENERATING PAYSLIP...',
-  'REPORTING TO CIBIL...',
-  'BUILDING YOUR SCORE...',
-  'PROFILE COMPLETE ✓',
-];
-
-let gaugeAnimated = false;
-let currentScore = 0;
-
-function animateScore(target) {
-  if (gaugeAnimated) return;
-  gaugeAnimated = true;
-  const circumference = 2 * Math.PI * 21; // ~132
-  const duration = 1800;
-  const start = performance.now();
-  function step(now) {
-    const p = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - p, 3);
-    const score = Math.round(eased * target);
-    gaugeNum.textContent = score;
-    // dashoffset: full = 132, 0 = full circle
-    const offset = circumference - (eased * (circumference * 0.75));
-    gaugeFill.style.strokeDasharray = circumference;
-    gaugeFill.style.strokeDashoffset = offset;
-    if (p < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-
-function onScroll() {
-  const rect = hero.getBoundingClientRect();
-  const total = hero.offsetHeight - window.innerHeight;
-  const progress = Math.max(0, Math.min(1, -rect.top / total));
-
-  // Progress bar
-  barFill.style.width = (progress * 100) + '%';
-
-  // Label
-  const li = Math.min(Math.floor(progress * labels.length), labels.length - 1);
-  progressLabel.textContent = labels[li];
-
-  // Rows appear at thresholds
-  const thresholds = [0.05, 0.15, 0.28, 0.4, 0.52];
-  rows.forEach((row, i) => {
-    if (progress >= thresholds[i]) row.classList.add('visible');
-    else row.classList.remove('visible');
-  });
-
-  // Total
-  if (progress >= 0.62) psTotal.classList.add('visible');
-  else psTotal.classList.remove('visible');
-
-  // Stamp
-  if (progress >= 0.72) stamp.classList.add('visible');
-  else stamp.classList.remove('visible');
-
-  // Score chip
-  if (progress >= 0.80) {
-    scoreChip.classList.add('visible');
-    animateScore(742);
-  }
-}
-
-window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
+// Static payslip — no scroll animation
+document.getElementById('gaugeNum').textContent = '742';
 
 // ── WAITLIST MODAL ──
 function openModal() {
